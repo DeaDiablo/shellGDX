@@ -20,11 +20,11 @@ public enum GameLog
   public void writeLog(String message)
   {
     if (enableLog)
-      Gdx.app.log("Log " + GameInstance.game.getClass() + ":", message);
+      Gdx.app.log("Log \"" + GameInstance.game.getClass().getSimpleName().toString() + "\"", message);
   }
   
   public void writeFPS()
   {
-    Gdx.app.log("Log " + GameInstance.game.getClass() + ":", "fps=" + Gdx.graphics.getFramesPerSecond());
+    Gdx.app.log("Log \"" + GameInstance.game.getClass().getSimpleName().toString() + "\"", "fps=" + Gdx.graphics.getFramesPerSecond());
   }
 }
