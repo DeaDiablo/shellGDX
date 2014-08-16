@@ -1,0 +1,35 @@
+package com.shellGDX.controller;
+
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.World;
+
+public class PhysicsWorld
+{
+  public static float   WORLD_TO_BOX = 0.001f;
+  public static float   BOX_TO_WORLD = 1000f;
+
+  public static boolean debug        = false;
+  public static boolean fixedTime    = false;
+  public static World   instance     = null;
+
+  public static void init(Vector2 gravity, boolean doSleep)
+  {
+    destroy();
+    instance = new World(gravity, doSleep);
+  }
+  
+  public static void destroy()
+  {
+    if (instance != null)
+    {
+      instance.dispose();
+      instance = null;
+    }
+  }
+
+  public static void update(float deltaTime)
+  {
+    if (instance != null)
+      instance.step(fixedTime ? 1 / 60.0f : deltaTime, 6, 2);
+  }
+}
