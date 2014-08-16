@@ -84,7 +84,7 @@ public enum LanguagesManager
             Element string = strings.get(j);
             String key = string.getAttribute("key");
             String value = string.getAttribute("value");
-            value = value.replace("&lt;br /&gt;&lt;br /&gt;", "\n");
+            value = value.replace("&lt;br /&gt;&lt;br /&gt;\\n;", "\n");
             this.language.put(key, value);
           }
 
