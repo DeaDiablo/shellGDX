@@ -1,5 +1,7 @@
 package com.shellGDX.manager;
 
+import java.io.File;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.TextureLoader.TextureParameter;
@@ -26,6 +28,45 @@ public class ResourceManager extends AssetManager
   {
     super(resolver);
     setLoader(TiledMap.class, new TmxMapLoader(resolver));
+  }
+  
+  public void loadFolder(String folder)
+  {
+    File directory = new File(folder);
+    
+    if (!directory.isDirectory())
+      return;
+    
+    File[] files = directory.listFiles();
+                    
+    for(int i = 0; i < files.length; i++)           
+    {
+      File file = files[i];
+      if (file.isDirectory())
+      {
+        loadFolder(file.getPath());
+        return;
+      }
+      
+      if(file.isFile())
+      {
+        String path = file.getPath();
+        path = path.replace("\\", "/");
+        int pointPosition = path.lastIndexOf(".");
+        if (pointPosition > 0)
+        {
+          String extension = path.substring(pointPosition);
+          if (extension.compareToIgnoreCase(".png") == 0)
+          {
+            loadTexture(path);
+          }
+          else if (extension.compareToIgnoreCase(".tmx") == 0)
+          {
+            loadTiledMap(path);
+          }
+        }
+      }
+    }
   }
 
   public FileHandle loadFile(String fileName)
