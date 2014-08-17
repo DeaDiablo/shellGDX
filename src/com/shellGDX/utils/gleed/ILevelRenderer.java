@@ -14,27 +14,29 @@
  * limitations under the License.
  ******************************************************************************/ 
 
-package com.badlogic.gdx.gleed;
+package com.shellGDX.utils.gleed;
 
-import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 
 /**
  * @author David Saltares
- * @date 02/11/2012
- * 
- * @brief Rectangle GLEED2D shape implementation 
+ * @date 03/11/2012
+ *
+ * @brief GLEED2D level render interface
  */
-public class RectangleElement extends LevelObject {
-	Rectangle rectangle = new Rectangle();
-	
-	RectangleElement() {
-		super();
-	}
+public interface ILevelRenderer {
+	/**
+	 * Renders every TextureElement in the level 
+	 * 
+	 * @param camera camera to render the level
+	 */
+	public void render(OrthographicCamera camera);
 	
 	/**
-	 * @return rectangle shape
+	 * Renders every TextureElement in the selected layers
+	 *  
+	 * @param camera camera to render the level
+	 * @param layers selected layers
 	 */
-	public Rectangle getRectangle() {
-		return rectangle;
-	}
+	public void render(OrthographicCamera camera, int[] layers);
 }

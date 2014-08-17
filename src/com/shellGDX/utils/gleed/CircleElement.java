@@ -14,35 +14,27 @@
  * limitations under the License.
  ******************************************************************************/ 
 
-package com.badlogic.gdx.gleed;
+package com.shellGDX.utils.gleed;
 
-import com.badlogic.gdx.math.Polygon;
+import com.badlogic.gdx.math.Circle;
 
 /**
  * @author David Saltares
  * @date 02/11/2012
  * 
- * @brief Path GLEED2D shape implementation 
+ * @brief Circle GLEED2D shape implementation 
  */
-public class PathElement extends LevelObject {
-	Polygon polygon;
-	int lineWidth;
+public class CircleElement extends LevelObject {
+	Circle circle;
 	
-	PathElement() {
+	CircleElement() {
 		super();
 	}
 	
 	/**
-	 * @return polygon shape formed by the path (it assumes it's closed)
+	 * @return circle shape
 	 */
-	public Polygon getPolygon() {
-		return polygon;
-	}
-	
-	/**
-	 * @return line width
-	 */
-	public int getLineWidth() {
-		return lineWidth;
+	public Circle getCircle() {
+		return circle;
 	}
 }

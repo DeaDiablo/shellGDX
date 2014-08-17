@@ -14,7 +14,7 @@
  * limitations under the License.
  ******************************************************************************/ 
 
-package com.badlogic.gdx.gleed;
+package com.shellGDX.utils.gleed;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;

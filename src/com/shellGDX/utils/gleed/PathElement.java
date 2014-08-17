@@ -14,49 +14,35 @@
  * limitations under the License.
  ******************************************************************************/ 
 
-package com.badlogic.gdx.gleed;
+package com.shellGDX.utils.gleed;
 
-import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Polygon;
 
 /**
  * @author David Saltares
  * @date 02/11/2012
  * 
- * @brief Models a generic object in a GLEED2D level
+ * @brief Path GLEED2D shape implementation 
  */
-public class LevelObject {
-	String name = "";
-	boolean visible = true;
-	Color color = new Color(0.0f, 0.0f, 0.0f, 1.0f);
-	Properties properties = new Properties();
-
-	LevelObject() {}
+public class PathElement extends LevelObject {
+	Polygon polygon;
+	int lineWidth;
 	
-	/**
-	 * @return custom properties
-	 */
-	public Properties getProperties() {
-		return properties;
+	PathElement() {
+		super();
 	}
 	
 	/**
-	 * @return name of the object
+	 * @return polygon shape formed by the path (it assumes it's closed)
 	 */
-	public String getName() {
-		return name;
+	public Polygon getPolygon() {
+		return polygon;
 	}
 	
 	/**
-	 * @return whether the object is visible or not
+	 * @return line width
 	 */
-	public boolean getVisible() {
-		return visible;
-	}
-	
-	/**
-	 * @return color tint of the object
-	 */
-	public Color getColor() {
-		return color;
+	public int getLineWidth() {
+		return lineWidth;
 	}
 }

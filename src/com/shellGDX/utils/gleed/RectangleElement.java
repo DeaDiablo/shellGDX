@@ -14,27 +14,27 @@
  * limitations under the License.
  ******************************************************************************/ 
 
-package com.badlogic.gdx.gleed;
+package com.shellGDX.utils.gleed;
 
-import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Rectangle;
 
 /**
  * @author David Saltares
  * @date 02/11/2012
  * 
- * @brief Circle GLEED2D shape implementation 
+ * @brief Rectangle GLEED2D shape implementation 
  */
-public class CircleElement extends LevelObject {
-	Circle circle;
+public class RectangleElement extends LevelObject {
+	Rectangle rectangle = new Rectangle();
 	
-	CircleElement() {
+	RectangleElement() {
 		super();
 	}
 	
 	/**
-	 * @return circle shape
+	 * @return rectangle shape
 	 */
-	public Circle getCircle() {
-		return circle;
+	public Rectangle getRectangle() {
+		return rectangle;
 	}
 }

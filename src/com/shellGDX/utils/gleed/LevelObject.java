@@ -14,29 +14,49 @@
  * limitations under the License.
  ******************************************************************************/ 
 
-package com.badlogic.gdx.gleed;
+package com.shellGDX.utils.gleed;
 
-import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Color;
 
 /**
  * @author David Saltares
- * @date 03/11/2012
- *
- * @brief GLEED2D level render interface
+ * @date 02/11/2012
+ * 
+ * @brief Models a generic object in a GLEED2D level
  */
-public interface ILevelRenderer {
-	/**
-	 * Renders every TextureElement in the level 
-	 * 
-	 * @param camera camera to render the level
-	 */
-	public void render(OrthographicCamera camera);
+public class LevelObject {
+	String name = "";
+	boolean visible = true;
+	Color color = new Color(0.0f, 0.0f, 0.0f, 1.0f);
+	Properties properties = new Properties();
+
+	LevelObject() {}
 	
 	/**
-	 * Renders every TextureElement in the selected layers
-	 *  
-	 * @param camera camera to render the level
-	 * @param layers selected layers
+	 * @return custom properties
 	 */
-	public void render(OrthographicCamera camera, int[] layers);
+	public Properties getProperties() {
+		return properties;
+	}
+	
+	/**
+	 * @return name of the object
+	 */
+	public String getName() {
+		return name;
+	}
+	
+	/**
+	 * @return whether the object is visible or not
+	 */
+	public boolean getVisible() {
+		return visible;
+	}
+	
+	/**
+	 * @return color tint of the object
+	 */
+	public Color getColor() {
+		return color;
+	}
 }
