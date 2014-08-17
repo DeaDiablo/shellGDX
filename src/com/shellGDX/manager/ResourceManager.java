@@ -12,6 +12,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.shellGDX.GameLog;
@@ -49,9 +50,6 @@ public class ResourceManager extends AssetManager
 
   protected void loadFolder(File directory)
   {
-    if (!directory.isDirectory())
-      return;
-    
     File[] files = directory.listFiles();
                     
     for(int i = 0; i < files.length; i++)           
@@ -59,8 +57,8 @@ public class ResourceManager extends AssetManager
       File file = files[i];
       if (file.isDirectory())
       {
-        loadFolder(file.getPath());
-        return;
+        loadFolder(file);
+        continue;
       }
       
       if(file.isFile())
@@ -78,6 +76,10 @@ public class ResourceManager extends AssetManager
           else if (extension.compareToIgnoreCase(".tmx") == 0)
           {
             loadTiledMap(path);
+          }
+          else if (extension.compareToIgnoreCase(".obj") == 0)
+          {
+            loadModel(path);
           }
         }
       }
@@ -156,6 +158,16 @@ public class ResourceManager extends AssetManager
   {
     return get(fileName, Music.class);
   }
+  
+  public void loadModel(String fileName)
+  {
+    load(fileName, Model.class);
+  }
+
+  public Model getModel(String fileName)
+  {
+    return get(fileName, Model.class);
+  }
 
   @Override
   public synchronized void clear()
@@ -201,7 +213,7 @@ public class ResourceManager extends AssetManager
     super.finishLoading();
     SoundManager.instance.finishLoading();
   }
-  
+
   @Override
   protected <T> void addAsset (final String fileName, Class<T> type, T asset)
   {
@@ -210,10 +222,6 @@ public class ResourceManager extends AssetManager
     int index = newFileName.lastIndexOf("/");    
     if (index != -1)
       newFileName = newFileName.substring(index + 1);
-
-    index = newFileName.lastIndexOf(".");
-    if (index != -1)
-      newFileName = newFileName.substring(0, index);
     
     super.addAsset(newFileName, type, asset);
   }
