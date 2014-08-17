@@ -9,6 +9,8 @@ import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.gleed.Level;
+import com.badlogic.gdx.gleed.LevelLoader;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -28,6 +30,7 @@ public class ResourceManager extends AssetManager
   {
     super(resolver);
     setLoader(TiledMap.class, new TmxMapLoader(resolver));
+    setLoader(Level.class, new LevelLoader(resolver));
   }
   
   public void loadFolder(String folder)
@@ -82,6 +85,16 @@ public class ResourceManager extends AssetManager
   public TiledMap getTiledMap(String fileName)
   {
     return get(fileName, TiledMap.class);
+  }
+
+  public void loadGleed2dMap(String fileName)
+  {
+    load(fileName, Level.class);
+  }
+
+  public Level getGleed2dMap(String fileName)
+  {
+    return get(fileName, Level.class);
   }
 
   public void loadTexture(String fileName)
