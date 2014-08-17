@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.shellGDX.GameLog;
 import com.shellGDX.utils.gleed.Level;
 import com.shellGDX.utils.gleed.LevelLoader;
 
@@ -37,6 +38,17 @@ public class ResourceManager extends AssetManager
   {
     File directory = new File(folder);
     
+    if (!directory.isDirectory())
+    {
+      GameLog.instance.writeError("Directory \"" + folder + "\" not found!");
+      return;
+    }
+   
+    loadFolder(directory);
+  }
+
+  protected void loadFolder(File directory)
+  {
     if (!directory.isDirectory())
       return;
     
