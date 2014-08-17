@@ -189,4 +189,20 @@ public class ResourceManager extends AssetManager
     super.finishLoading();
     SoundManager.instance.finishLoading();
   }
+  
+  @Override
+  protected <T> void addAsset (final String fileName, Class<T> type, T asset)
+  {
+    String newFileName = fileName;
+
+    int index = newFileName.lastIndexOf("/");    
+    if (index != -1)
+      newFileName = newFileName.substring(index + 1);
+
+    index = newFileName.lastIndexOf(".");
+    if (index != -1)
+      newFileName = newFileName.substring(0, index);
+    
+    super.addAsset(newFileName, type, asset);
+  }
 }
