@@ -213,9 +213,29 @@ public class ResourceManager extends AssetManager
     super.finishLoading();
     SoundManager.instance.finishLoading();
   }
+  
+  @Override
+  public synchronized <T> T get(String fileName, Class<T> type)
+  {
+    int index = fileName.lastIndexOf("/");    
+    if (index != -1)
+      fileName = fileName.substring(index + 1);
+
+    return super.get(fileName, type);
+  }
+  
+  @Override
+  public synchronized <T> T get(String fileName)
+  {
+    int index = fileName.lastIndexOf("/");    
+    if (index != -1)
+      fileName = fileName.substring(index + 1);
+
+    return super.get(fileName);
+  }
 
   @Override
-  protected <T> void addAsset (final String fileName, Class<T> type, T asset)
+  protected <T> void addAsset(final String fileName, Class<T> type, T asset)
   {
     String newFileName = fileName;
 
