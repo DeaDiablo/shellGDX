@@ -8,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.shellGDX.controller.PhysicsWorld;
 
@@ -105,10 +106,21 @@ public abstract class PhysicsModel extends Image
   }
   
   @Override
+  protected void setStage(Stage stage)
+  {
+    super.setStage(stage);
+    if (PhysicsWorld.instance != null)
+      initPhysicsObject(PhysicsWorld.instance);
+  }
+  
+  @Override
   public boolean remove()
   {
     if (body != null && PhysicsWorld.instance != null)
+    {
       PhysicsWorld.instance.destroyBody(body);
+      body = null;
+    }
     return super.remove();
   }
 }
