@@ -1,22 +1,7 @@
-/*******************************************************************************
- * Copyright 2012 David Saltares
- * 
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *   http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- ******************************************************************************/ 
-
 package com.shellGDX.utils.gleed;
 
 //import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetLoaderParameters;
 import com.badlogic.gdx.assets.AssetManager;
@@ -35,208 +20,239 @@ import com.badlogic.gdx.utils.Logger;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
 
-/**
- * @author David Saltares
- * @date 03/11/2012
- * 
- * @brief GLEED2D level loader to use along the AssetManager system
- */
-public class LevelLoader extends AsynchronousAssetLoader<Level, LevelLoader.GLEEDParameter > implements Disposable {
+public class LevelLoader extends AsynchronousAssetLoader<Level, LevelLoader.GLEEDParameter > implements Disposable
+{
 
-	static public class GLEEDParameter extends AssetLoaderParameters<Level> {
+	static public class GLEEDParameter extends AssetLoaderParameters<Level>
+  {
 	}
 
-	static private Logger s_logger = new Logger("LevelLoader");
+	static private Logger logger = new Logger("LevelLoader");
 	
-	private Level m_level = null;
-	private String m_pathRoot = "data";
-	private TextureAtlas m_atlas = null;
-	private String m_atlasFile = null;
-	private AssetManager m_assetManager;
+	private Level level = null;
+	private String pathRoot = "data";
+	private TextureAtlas atlas = null;
+	private String atlasFile = null;
+	private AssetManager assetManager;
 	
-	/**
-	 * @param loggingLevel amount of debug information the loader will output
-	 */
-	public static void setLoggingLevel(int loggingLevel) {
-		s_logger.setLevel(loggingLevel);
+	public static void setLoggingLevel(int loggingLevel)
+  {
+		logger.setLevel(loggingLevel);
 	}
 	
-	/**
-	 * @param resolver file handle resolver to find the proper file
-	 * 
-	 */
-	public LevelLoader(FileHandleResolver resolver) {
+	public LevelLoader(FileHandleResolver resolver)
+  {
 		super(resolver);
 	}
 
-	/**
-	 * Loads a level in an Asynchronous manner
-	 * 
-	 * @param manager asset manager to use
-	 * @param fileName level file to load
-	 * @param parameters custom params (not used)
-	 */
 	@Override
 	public void loadAsync (AssetManager manager, String fileName, FileHandle file, GLEEDParameter parameter)
 	{
-		m_assetManager = manager;
+		assetManager = manager;
 		
-		s_logger.info("loading file " + fileName);
+		logger.info("loading file " + fileName);
 		
-		try {
-			// Parse xml document
-			XmlReader reader = new XmlReader();
-			Element root = reader.parse(file);
+		try
+    {
+		  // Parse xml document
+		  XmlReader reader = new XmlReader();
+		  Element root = reader.parse(Gdx.files.internal(fileName));
 			
-			// Create level and load properties
-			s_logger.info("loading level properties");
-			if (m_level == null) {
-				m_level = new Level(fileName);
-				m_level.properties.load(root);
+		  // Create level and load properties
+		  logger.info("loading level properties");
+		  if (level == null)
+      {
+				level = new Level();
+        level.setName(root.getAttribute("Name", ""));
+				level.getProperties().load(root);
 			}
 			
 			// Load atlas if necessary
-			if (!m_atlasFile.isEmpty()) {
-				s_logger.info("fetching texture atlas " + m_atlasFile);
-				m_atlas = manager.get(m_atlasFile, TextureAtlas.class);
+			if (!atlasFile.isEmpty())
+      {
+				logger.info("fetching texture atlas " + atlasFile);
+				atlas = manager.get(atlasFile, TextureAtlas.class);
 			}
 			
 			// Load layers
-			s_logger.info("loading layers");
+			logger.info("loading layers");
 			Array<Element> layerElements = root.getChildByName("Layers").getChildrenByName("Layer");
 			
-			for (int i = 0; i < layerElements.size; ++i) {
+			for (int i = 0; i < layerElements.size; ++i)
+      {
 				Element layerElement = layerElements.get(i);
 				loadLayer(layerElement);
 			}
-			
-		} catch (Exception e) {
-			s_logger.error("error loading file " + fileName + " " + e.getMessage());
+		}
+    catch (Exception e)
+    {
+			logger.error("error loading file " + fileName + " " + e.getMessage());
 		}
 	}
 
-	/**
-	 * Loads a level in an Synchronous manner
-	 * 
-	 * @param manager asset manager to use
-	 * @param fileName level file to load
-	 * @param parameters custom params (not used)
-	 */
 	@Override
 	public Level loadSync (AssetManager manager, String fileName, FileHandle file, GLEEDParameter parameter)
 	{
-		return m_level;
+		return level;
 	}
 
-	/**
-	 * Gets TextureAtlas or Texture assets required by the level
-	 * 
-	 * @param fileName to get dependencies from
-	 * @param parameters custom params (not used)
-	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public Array<AssetDescriptor> getDependencies (String fileName, FileHandle file, GLEEDParameter parameter)
 	{
 
-		s_logger.info("getting asset dependencies for " + fileName);
+		logger.info("getting asset dependencies for " + fileName);
 		Array<AssetDescriptor> dependencies = new Array<AssetDescriptor>();
 		
-		try {
+		try
+    {
 			// Parse xml document
 			XmlReader reader = new XmlReader();
-			Element root = reader.parse(file);
+			Element root = reader.parse(Gdx.files.internal(fileName));
 
-			if (m_level == null) {
-				m_level = new Level(fileName);
-				m_level.properties.load(root);
+			if (level == null)
+      {
+				level = new Level();
+				level.setRenderer();
+        level.setName(root.getAttribute("Name", ""));
+				level.getProperties().load(root);
 			}
 			
 			// Check texture atlass
-			m_atlasFile = m_level.properties.getString("atlas", "");
-			m_pathRoot = m_level.properties.getString("assetRoot", "data");
+			atlasFile = level.getProperties().getString("atlas", "");
+			pathRoot = level.getProperties().getString("assetRoot", "data");
 			
-			if (!m_atlasFile.isEmpty()) {
-				s_logger.info("texture atlas dependency " + m_atlasFile);
-				dependencies.add(new AssetDescriptor(m_atlasFile, TextureAtlas.class));
+			if (!atlasFile.isEmpty())
+      {
+				logger.info("texture atlas dependency " + atlasFile);
+				dependencies.add(new AssetDescriptor(atlasFile, TextureAtlas.class));
 			}
-			else {
-				s_logger.info("textures asset folder " + m_pathRoot);
+			else
+      {
+				logger.info("textures asset folder " + pathRoot);
 				Array<Element> elements = root.getChildrenByNameRecursively("Item");
 				
-				for (int i = 0; i < elements.size; ++i) {
+				for (int i = 0; i < elements.size; ++i)
+        {
 					Element element = elements.get(i);
 					
-					if (element.getAttribute("xsi:type", "").equals("TextureItem")) {
+					if (element.getAttribute("xsi:type", "").equals("TextureItem"))
+          {
 						String[] pathParts = element.getChildByName("texture_filename").getText().split("\\\\");
-						s_logger.info("texture dependency " + m_pathRoot + "/" + pathParts[pathParts.length - 1]);
-						dependencies.add(new AssetDescriptor(m_pathRoot + "/" + pathParts[pathParts.length - 1], Texture.class));
+						logger.info("texture dependency " + pathRoot + "/" + pathParts[pathParts.length - 1]);
+						dependencies.add(new AssetDescriptor(pathRoot + "/" + pathParts[pathParts.length - 1], Texture.class));
 					}
 				}
 			}
 			
-		} catch (Exception e) {
-			s_logger.error("error loading asset dependencies " + fileName + " " + e.getMessage());
+		}
+    catch (Exception e)
+    {
+			logger.error("error loading asset dependencies " + fileName + " " + e.getMessage());
 		}
 		
 		return dependencies;
 	}
 	
-	private void loadLayer(Element element) {
+	private void loadLayer(Element element)
+  {
 		Layer layer = new Layer();
 		
-		layer.properties.load(element);
-		
+		/*layer.properties.load(element);
 		layer.name = element.getAttribute("Name", "");
-		layer.visible = Boolean.parseBoolean(element.getAttribute("Visible", "true"));
+		layer.visible = Boolean.parseBoolean(element.getAttribute("Visible", "true"));*/
+    
+    loadElement(layer, element);    
 		
-		s_logger.info("loading layer " + layer.name);
+		//logger.info("loading layer " + layer.name);
 		Array<Element> items = element.getChildByName("Items").getChildrenByName("Item");
 		
-		for (int i = 0; i < items.size; ++i) {
+		for (int i = 0; i < items.size; ++i)
+    {
 			Element item = items.get(i);
 			String type = item.getAttribute("xsi:type");
 			
-			if (type.equals("TextureItem")) {
+			if (type.equals("TextureItem"))
+      {
 				TextureElement texture = new TextureElement();
 				loadElement(texture, item);
 				loadTextureElement(texture, item);
-				layer.textures.add(texture);
+				int xCoord = (int)texture.position.x / 10000;
+				int yCoord = (int)texture.position.y / 10000;
+				
+				Array<TextureElement> array = layer.getTextures(xCoord, yCoord);
+				if (array == null)
+				{
+				  array = new Array<TextureElement>();
+				  layer.addTextureArray(xCoord, yCoord, array);
+				}
+				array.add(texture);
 			}
-			else if (type.equals("PathItem")) {
+			else if (type.equals("PathItem"))
+      {
 				PathElement path = new PathElement();
 				loadElement(path, item);
 				loadPathElement(path, item);
-				layer.objects.add(path);
+				int xCoord = (int)path.polygon.getX() / 10000;
+        int yCoord = (int)path.polygon.getY() / 10000;
+        
+        Array<LevelObject> array = layer.getObjects(xCoord, yCoord);
+        if (array == null)
+        {
+          array = new Array<LevelObject>();
+          layer.addObjectArray(xCoord, yCoord, array);
+        }
+        array.add(path);
 			}
-			else if (type.equals("RectangleItem")) {
+			else if (type.equals("RectangleItem"))
+      {
 				RectangleElement rectangle = new RectangleElement();
 				loadElement(rectangle, item);
 				loadRectangleElement(rectangle, item);
-				layer.objects.add(rectangle);
+				int xCoord = (int)rectangle.rectangle.x / 10000;
+        int yCoord = (int)rectangle.rectangle.y / 10000;
+        
+        Array<LevelObject> array = layer.getObjects(xCoord, yCoord);
+        if (array == null)
+        {
+          array = new Array<LevelObject>();
+          layer.addObjectArray(xCoord, yCoord, array);
+        }
+        array.add(rectangle);
 				
 			}
-			else if (type.equals("CircleItem")) {
+			else if (type.equals("CircleItem"))
+      {
 				CircleElement circle = new CircleElement();
 				loadElement(circle, item);
 				loadCircleElement(circle, item);
-				layer.objects.add(circle);
+				int xCoord = (int)circle.circle.x / 10000;
+        int yCoord = (int)circle.circle.y / 10000;
+        
+        Array<LevelObject> array = layer.getObjects(xCoord, yCoord);
+        if (array == null)
+        {
+          array = new Array<LevelObject>();
+          layer.addObjectArray(xCoord, yCoord, array);
+        }
+        array.add(circle);
 			}
 		}
 		
-		m_level.layers.add(layer);
+		level.getLayers().add(layer);
 	}
 	
-	private void loadElement(LevelObject levelObject, Element element) {
+	private void loadElement(LevelObject levelObject, Element element)
+  {
 		levelObject.name = element.getAttribute("Name", "");
 		levelObject.visible = Boolean.parseBoolean(element.getAttribute("Visible", "true"));
 		levelObject.properties.load(element);
 		
-		s_logger.info("loading element " + levelObject.name);
+		logger.info("loading element " + levelObject.name);
 	}
 	
-	private void loadTextureElement(TextureElement texture, Element item) {
-
+	private void loadTextureElement(TextureElement texture, Element item)
+  {
 		Element positionElement = item.getChildByName("Position");
 		texture.position.x = Float.parseFloat(positionElement.getChildByName("X").getText());
 		texture.position.y = -Float.parseFloat(positionElement.getChildByName("Y").getText());
@@ -257,15 +273,17 @@ public class LevelLoader extends AsynchronousAssetLoader<Level, LevelLoader.GLEE
 		
 		texture.rotation = Float.parseFloat(item.getChildByName("Rotation").getText());
 		
-		if (m_atlasFile.isEmpty()) {
+		if (atlasFile.isEmpty())
+    {
 			String[] pathParts = item.getChildByName("texture_filename").getText().split("\\\\");
-			texture.path = m_pathRoot + "/" + pathParts[pathParts.length - 1];
-			texture.region.setRegion(m_assetManager.get(texture.path, Texture.class));
+			texture.path = pathRoot + "/" + pathParts[pathParts.length - 1];
+			texture.region.setRegion(assetManager.get(texture.path, Texture.class));
 		}
-		else {
+		else
+    {
 			String[] assetParts = item.getChildByName("asset_name").getText().split("\\\\");
 			texture.path = assetParts[assetParts.length - 1];
-			TextureRegion region = m_atlas.findRegion(texture.path);
+			TextureRegion region = atlas.findRegion(texture.path);
 			texture.region.setRegion(region);
 		}
 		
@@ -273,7 +291,8 @@ public class LevelLoader extends AsynchronousAssetLoader<Level, LevelLoader.GLEE
 							Boolean.parseBoolean(item.getChildByName("FlipVertically").getText()));
 	}
 	
-	private void loadCircleElement(CircleElement circle, Element item) {
+	private void loadCircleElement(CircleElement circle, Element item)
+  {
 		Element position = item.getChildByName("Position");
 		
 		Element colorElement = item.getChildByName("FillColor");
@@ -287,7 +306,8 @@ public class LevelLoader extends AsynchronousAssetLoader<Level, LevelLoader.GLEE
 											   Float.parseFloat(item.getChildByName("Radius").getText()));
 	}
 	
-	private void loadRectangleElement(RectangleElement rectangle, Element item) {
+	private void loadRectangleElement(RectangleElement rectangle, Element item)
+  {
 		Element position = item.getChildByName("Position");
 		
 		Element colorElement = item.getChildByName("FillColor");
@@ -302,11 +322,13 @@ public class LevelLoader extends AsynchronousAssetLoader<Level, LevelLoader.GLEE
 		rectangle.rectangle.height = Float.parseFloat(item.getChildByName("Height").getText());
 	}
 	
-	private void loadPathElement(PathElement path, Element item) {
+	private void loadPathElement(PathElement path, Element item)
+  {
 		Array<Element> pointElements = item.getChildByName("WorldPoints").getChildrenByName("Vector2");
 		float[] vertices = new float[pointElements.size * 2];
 		
-		for (int j = 0; j < pointElements.size; ++j) {
+		for (int j = 0; j < pointElements.size; ++j)
+    {
 			Element pointElement = pointElements.get(j);
 			vertices[j * 2] = Float.parseFloat(pointElement.getChildByName("X").getText());
 			vertices[j * 2 + 1] = -Float.parseFloat(pointElement.getChildByName("Y").getText());
@@ -324,19 +346,27 @@ public class LevelLoader extends AsynchronousAssetLoader<Level, LevelLoader.GLEE
 	}
 	
 	@Override
-	public void dispose() {
-		s_logger.info("disposing level assets " + m_level.file);
+	public void dispose()
+  {
+		logger.info("disposing level assets " + level.getName());
 		
-		for (int i = 0; i < m_level.layers.size; ++i) {
-			Array<TextureElement> textures = m_level.layers.get(i).textures;
+		for (int i = 0; i < level.getLayers().size; ++i)
+    {
+		  for (int x = 0; x < 100; ++x)
+		    for (int y = 0; y < 100; ++y)
+		    {
+		      Array<TextureElement> textures = level.getLayers().get(i).getTextures(x, y);
 			
-			for (int j = 0; j < textures.size; ++j) {
-				TextureElement texture = textures.get(j);
+		      for (int j = 0; j < textures.size; ++j)
+		      {
+		        TextureElement texture = textures.get(j);
 				
-				if (m_assetManager.isLoaded(texture.path, Texture.class)) {
-					m_assetManager.unload(texture.path);
-				}
-			}
+		        if (assetManager.isLoaded(texture.path, Texture.class))
+		        {
+		          assetManager.unload(texture.path);
+		        }
+		      }
+		    }
 		}
 	}
 }
