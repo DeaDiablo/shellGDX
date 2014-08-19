@@ -6,12 +6,8 @@ public class LevelObject
 {
 	String name = "";
 	boolean visible = true;
-	Color color = new Color(0.0f, 0.0f, 0.0f, 1.0f);
+	Color color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
 	Properties properties = new Properties();
-
-	LevelObject()
-	{
-	}
 
 	public Properties getProperties()
 	{

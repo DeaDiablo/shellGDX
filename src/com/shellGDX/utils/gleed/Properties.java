@@ -9,10 +9,10 @@ import com.badlogic.gdx.utils.XmlReader.Element;
 
 public class Properties
 {
-	HashMap<String, String> strings = new HashMap<String, String> ();
-	HashMap<String, Color> colors = new HashMap<String, Color>();
-	HashMap<String, Boolean> booleans = new HashMap<String, Boolean>();
-	HashMap<String, Vector2> vectors = new HashMap<String, Vector2>();
+	HashMap<String, String>  strings   = new HashMap<String, String> ();
+	HashMap<String, Color>   colors    = new HashMap<String, Color>();
+	HashMap<String, Boolean> booleans  = new HashMap<String, Boolean>();
+	HashMap<String, Vector2> vectors   = new HashMap<String, Vector2>();
 	
 	Properties()
   {
