@@ -53,9 +53,9 @@ public class MainController extends InputMultiplexer
     PhysicsWorld.update(deltaTime);
 
     // update elements
-    for (Stage Stage : stages)
+    for (Stage stage : stages)
     {
-      Stage.act(deltaTime);
+      stage.act(deltaTime);
     }
   }
 
@@ -68,5 +68,13 @@ public class MainController extends InputMultiplexer
     stages.clear();
     
     PhysicsWorld.destroy();
+  }
+
+  public void resize(int width, int height)
+  {
+    for (Stage stage : stages)
+    {
+      stage.getViewport().update(width, height);
+    }
   }
 }
