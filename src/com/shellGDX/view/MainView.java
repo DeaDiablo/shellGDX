@@ -1,12 +1,15 @@
 package com.shellGDX.view;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.shellGDX.controller.PhysicsWorld;
 import com.shellGDX.manager.ResourceManager;
 import com.shellGDX.manager.ShaderManager;
+import com.shellGDX.model.Scene2D;
+import com.shellGDX.model.Scene3D;
 
 public class MainView
 {
@@ -43,15 +46,22 @@ public class MainView
     ShaderManager.instance.clear();
   }
 
-  public void draw(Array<Stage> stages)
+  public void draw(Array<Scene2D> scenes2D, Array<Scene3D> scenes3D)
   {
-    for(Stage stage : stages)
+    for(Scene2D scene : scenes2D)
     {
-      stage.draw();
+      scene.draw();
       if (PhysicsWorld.debug && PhysicsWorld.instance != null)
       {
-        getDebugRenderer().render(PhysicsWorld.instance, stage.getCamera().combined);
+        getDebugRenderer().render(PhysicsWorld.instance, scene.getCamera().combined);
       }
+    }
+
+    Gdx.gl.glClear(GL30.GL_DEPTH_BUFFER_BIT);
+    
+    for(Scene3D scene : scenes3D)
+    {
+      scene.draw();
     }
   }
 }

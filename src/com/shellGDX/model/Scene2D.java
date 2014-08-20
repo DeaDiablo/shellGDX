@@ -1,0 +1,116 @@
+package com.shellGDX.model;
+
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Scaling;
+import com.badlogic.gdx.utils.viewport.ScalingViewport;
+
+public class Scene2D extends Stage
+{
+  protected int     zIndex = 0;
+  protected Group2D mainGroup = null;
+
+  protected OrthographicCamera camera = null;
+  protected Rectangle cameraRect = new Rectangle(0, 0, 0, 0);
+    
+  public Scene2D(float width, float height)
+  {
+    super(new ScalingViewport(Scaling.stretch, width, height));
+    
+    camera = (OrthographicCamera)getCamera();
+    mainGroup = new Group2D();
+    super.getRoot().addActor(mainGroup);
+  }
+  
+  public Vector2 screenToSceneCoordinates(float screenX, float screenY)
+  {
+    Vector2 buffer = new Vector2(screenX, screenY);
+    buffer = screenToStageCoordinates(buffer);
+    return buffer;
+  }
+
+  protected void updateCameraRectangle()
+  {
+    cameraRect.set(camera.position.x - camera.viewportWidth * 0.5f * camera.zoom,
+                   camera.position.y - camera.viewportHeight * 0.5f * camera.zoom,
+                   camera.viewportWidth * camera.zoom,
+                   camera.viewportHeight * camera.zoom);
+  }
+  
+  public Rectangle getCameraRectangle()
+  {
+    return cameraRect;
+  }
+  
+  public float getCameraLeft()
+  {
+    return cameraRect.x;
+  }
+  
+  public float getCameraRight()
+  {
+    return cameraRect.x + cameraRect.width;
+  }
+  
+  public float getCameraBottom()
+  {
+    return cameraRect.y;
+  }
+  
+  public float getCameraTop()
+  {
+    return cameraRect.y + cameraRect.height;
+  }
+  
+  public float getCameraWidth()
+  {
+    return cameraRect.width;
+  }
+  
+  public float getCameraHeight()
+  {
+    return cameraRect.height;
+  }
+  
+  public void setZIndex(int zIndex)
+  {
+    this.zIndex = zIndex;
+  }
+
+  public int getZIndex()
+  {
+    return this.zIndex;
+  }
+  
+  @Override
+  public void act(float delta)
+  {
+    super.act(delta);
+    updateCameraRectangle();
+  }
+
+  @Override
+  public void addActor(Actor actor)
+  {
+    Array<Actor> children = mainGroup.getChildren();
+    for (int i = 0; i < children.size; i++)
+    {
+      if (actor.getZIndex() < children.get(i).getZIndex())
+      {
+        mainGroup.addActorAt(i, actor);
+        return;
+      }
+    }
+    mainGroup.addActor(actor);
+  }
+
+  @Override
+  public Group getRoot() {
+    return mainGroup;
+  }
+}

@@ -2,48 +2,76 @@ package com.shellGDX.controller;
 
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.shellGDX.manager.SoundManager;
+import com.shellGDX.model.Scene2D;
+import com.shellGDX.model.Scene3D;
 
 public class MainController extends InputMultiplexer
 {
-  // Stages
-  private Array<Stage> stages = new Array<Stage>();
+  // Scenes
+  private Array<Scene2D> scenes2D = new Array<Scene2D>();
+  private Array<Scene3D> scenes3D = new Array<Scene3D>();
 
   public MainController()
   {
     super();
   }
 
-  // Stages
-  public Array<Stage> getStages()
+  // Scenes2D
+  public Array<Scene2D> getScenes2D()
   {
-    return stages;
+    return scenes2D;
   }
 
-  public boolean addStage(Stage stage)
+  public boolean addScene2D(Scene2D scene)
   {
-    if (stages.contains(stage, true))
+    if (scenes2D.contains(scene, true))
       return false;
 
-    if (stage instanceof InputProcessor)
-      addProcessor(stage);
-    stages.add(stage);
+    if (scene instanceof InputProcessor)
+      addProcessor(scene);
+    scenes2D.add(scene);
     
     return true;
   }
 
-  public void removeStage(Stage stage)
+  public void removeScene2D(Scene2D scene)
   {
-    if (!stages.contains(stage, true))
+    if (!scenes2D.contains(scene, true))
       return;
 
-    if (stage instanceof InputProcessor)
-      removeProcessor(stage);
+    if (scene instanceof InputProcessor)
+      removeProcessor(scene);
 
-    stages.removeValue(stage, true);
-    stage.dispose();
+    scenes2D.removeValue(scene, true);
+    scene.dispose();
+  }
+  
+  //Scenes3D
+
+  public Array<Scene3D> getScenes3D()
+  {
+    return scenes3D;
+  }
+
+  public boolean addScene3D(Scene3D scene)
+  {
+    if (scenes3D.contains(scene, true))
+      return false;
+
+    scenes3D.add(scene);
+    
+    return true;
+  }
+
+  public void removeScene3D(Scene3D scene)
+  {
+    if (!scenes3D.contains(scene, true))
+      return;
+
+    scenes3D.removeValue(scene, true);
+    scene.dispose();
   }
 
   public void update(float deltaTime)
@@ -53,9 +81,14 @@ public class MainController extends InputMultiplexer
     PhysicsWorld.update(deltaTime);
 
     // update elements
-    for (Stage stage : stages)
+    for (Scene2D scene : scenes2D)
     {
-      stage.act(deltaTime);
+      scene.act(deltaTime);
+    }
+    
+    for (Scene3D scene : scenes3D)
+    {
+      scene.act(deltaTime);
     }
   }
 
@@ -63,18 +96,29 @@ public class MainController extends InputMultiplexer
   {
     super.clear();
     
-    for(Stage stage : stages)
-      removeStage(stage);
-    stages.clear();
+    for(Scene2D scene : scenes2D)
+      removeScene2D(scene);
+    scenes2D.clear();
+    
+    for(Scene3D scene : scenes3D)
+      removeScene3D(scene);
+    scenes3D.clear();
     
     PhysicsWorld.destroy();
   }
 
   public void resize(int width, int height)
   {
-    for (Stage stage : stages)
+    for (Scene2D scene : scenes2D)
     {
-      stage.getViewport().update(width, height);
+      scene.getViewport().update(width, height);
+      scene.getCamera().update();
+    }
+    
+    for (Scene3D scene : scenes3D)
+    {
+      scene.updateViewport();
+      scene.getCamera().update();
     }
   }
 }
