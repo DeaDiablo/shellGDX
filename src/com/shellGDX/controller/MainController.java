@@ -105,6 +105,7 @@ public class MainController extends InputMultiplexer
     scenes3D.clear();
     
     PhysicsWorld.destroy();
+    LightWorld.destroy();
   }
 
   public void resize(int width, int height)
@@ -113,6 +114,12 @@ public class MainController extends InputMultiplexer
     {
       scene.getViewport().update(width, height);
       scene.getCamera().update();
+      LightWorld.instance.setCombinedMatrix(scene.getCamera().combined,
+                                            scene.getCamera().position.x,
+                                            scene.getCamera().position.y,
+                                            scene.getCamera().viewportWidth,
+                                            scene.getCamera().viewportHeight);
+      LightWorld.instance.update();
     }
     
     for (Scene3D scene : scenes3D)

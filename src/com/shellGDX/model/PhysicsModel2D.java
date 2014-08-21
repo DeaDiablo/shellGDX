@@ -9,6 +9,8 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.shellGDX.box2dLight.RayHandler;
+import com.shellGDX.controller.LightWorld;
 import com.shellGDX.controller.PhysicsWorld;
 
 public abstract class PhysicsModel2D extends Model2D
@@ -68,7 +70,7 @@ public abstract class PhysicsModel2D extends Model2D
     setScale(scaleX, scaleY);
   }
 
-  public abstract boolean initPhysicsObject(World world);
+  public abstract boolean initPhysicsObject(World world, RayHandler rayHandler);
   
   public Body getBody()
   {
@@ -108,8 +110,8 @@ public abstract class PhysicsModel2D extends Model2D
   protected void setStage(Stage stage)
   {
     super.setStage(stage);
-    if (PhysicsWorld.instance != null)
-      initPhysicsObject(PhysicsWorld.instance);
+    if (PhysicsWorld.instance != null && LightWorld.instance != null)
+      initPhysicsObject(PhysicsWorld.instance, LightWorld.instance);
   }
   
   @Override

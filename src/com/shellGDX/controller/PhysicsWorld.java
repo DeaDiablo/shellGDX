@@ -2,6 +2,7 @@ package com.shellGDX.controller;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import com.shellGDX.box2dLight.RayHandler;
 
 public class PhysicsWorld
 {
@@ -16,6 +17,8 @@ public class PhysicsWorld
   {
     destroy();
     instance = new World(gravity, doSleep);
+    RayHandler.useDiffuseLight(true);
+    RayHandler.setGammaCorrection(true);
   }
   
   public static void destroy()
