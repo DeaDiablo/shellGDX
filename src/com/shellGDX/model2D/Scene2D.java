@@ -1,4 +1,4 @@
-package com.shellGDX.model;
+package com.shellGDX.model2D;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Rectangle;
@@ -13,7 +13,7 @@ import com.badlogic.gdx.utils.viewport.ScalingViewport;
 public class Scene2D extends Stage
 {
   protected int     zIndex = 0;
-  protected Group2D mainGroup = null;
+  protected Group2D root = null;
 
   protected OrthographicCamera camera = null;
   protected Rectangle cameraRect = new Rectangle(0, 0, 0, 0);
@@ -23,8 +23,8 @@ public class Scene2D extends Stage
     super(new ScalingViewport(Scaling.stretch, width, height));
     
     camera = (OrthographicCamera)getCamera();
-    mainGroup = new Group2D();
-    super.getRoot().addActor(mainGroup);
+    root = new Group2D();
+    super.getRoot().addActor(root);
   }
   
   public Vector2 screenToSceneCoordinates(float screenX, float screenY)
@@ -90,6 +90,7 @@ public class Scene2D extends Stage
   @Override
   public void act(float delta)
   {
+    camera.update();
     super.act(delta);
     updateCameraRectangle();
   }
@@ -97,20 +98,20 @@ public class Scene2D extends Stage
   @Override
   public void addActor(Actor actor)
   {
-    Array<Actor> children = mainGroup.getChildren();
+    Array<Actor> children = root.getChildren();
     for (int i = 0; i < children.size; i++)
     {
       if (actor.getZIndex() < children.get(i).getZIndex())
       {
-        mainGroup.addActorAt(i, actor);
+        root.addActorAt(i, actor);
         return;
       }
     }
-    mainGroup.addActor(actor);
+    root.addActor(actor);
   }
 
   @Override
   public Group getRoot() {
-    return mainGroup;
+    return root;
   }
 }

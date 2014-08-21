@@ -1,4 +1,4 @@
-package com.shellGDX.model;
+package com.shellGDX.utils;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;

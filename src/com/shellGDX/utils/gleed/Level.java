@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Array;
-import com.shellGDX.model.Scene2D;
+import com.shellGDX.model2D.Scene2D;
 
 public class Level extends Actor
 {

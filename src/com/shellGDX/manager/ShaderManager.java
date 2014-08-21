@@ -2,7 +2,7 @@ package com.shellGDX.manager;
 
 import java.util.HashMap;
 
-import com.shellGDX.model.Shader;
+import com.shellGDX.utils.Shader;
 
 public enum ShaderManager
 {

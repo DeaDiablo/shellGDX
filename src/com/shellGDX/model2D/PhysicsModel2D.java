@@ -1,4 +1,4 @@
-package com.shellGDX.model;
+package com.shellGDX.model2D;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;

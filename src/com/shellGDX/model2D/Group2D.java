@@ -1,4 +1,4 @@
-package com.shellGDX.model;
+package com.shellGDX.model2D;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.utils.Array;
+import com.shellGDX.utils.Shader;
 
 public class Group2D extends Group
 {

@@ -4,8 +4,8 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.utils.Array;
 import com.shellGDX.manager.SoundManager;
-import com.shellGDX.model.Scene2D;
-import com.shellGDX.model.Scene3D;
+import com.shellGDX.model2D.Scene2D;
+import com.shellGDX.model3D.Scene3D;
 
 public class MainController extends InputMultiplexer
 {
@@ -124,7 +124,7 @@ public class MainController extends InputMultiplexer
     
     for (Scene3D scene : scenes3D)
     {
-      scene.updateViewport();
+      scene.setViewport(width, height);
       scene.getCamera().update();
     }
   }

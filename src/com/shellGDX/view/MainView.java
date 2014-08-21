@@ -9,8 +9,8 @@ import com.shellGDX.controller.LightWorld;
 import com.shellGDX.controller.PhysicsWorld;
 import com.shellGDX.manager.ResourceManager;
 import com.shellGDX.manager.ShaderManager;
-import com.shellGDX.model.Scene2D;
-import com.shellGDX.model.Scene3D;
+import com.shellGDX.model2D.Scene2D;
+import com.shellGDX.model3D.Scene3D;
 
 public class MainView
 {

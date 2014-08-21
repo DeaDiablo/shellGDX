@@ -1,4 +1,4 @@
-package com.shellGDX.model;
+package com.shellGDX.model2D;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
