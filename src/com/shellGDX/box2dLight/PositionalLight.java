@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.VertexAttributes.Usage;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.shellGDX.controller.PhysicsWorld;
 
 public abstract class PositionalLight extends Light
 {
@@ -90,7 +89,6 @@ public abstract class PositionalLight extends Light
     if (body != null && !staticLight)
     {
       final Vector2 vec = body.getPosition();
-      vec.scl(PhysicsWorld.BOX_TO_WORLD);
       float angle = body.getAngle();
       final float cos = MathUtils.cos(angle);
       final float sin = MathUtils.sin(angle);

@@ -90,6 +90,8 @@ public class MainController extends InputMultiplexer
     {
       scene.act(deltaTime);
     }
+    
+    LightWorld.update();
   }
 
   public void clear()
