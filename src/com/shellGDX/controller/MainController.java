@@ -112,20 +112,17 @@ public class MainController extends InputMultiplexer
   {
     for (Scene2D scene : scenes2D)
     {
-      scene.getViewport().update(width, height);
-      scene.getCamera().update();
-      LightWorld.instance.setCombinedMatrix(scene.getCamera().combined,
-                                            scene.getCamera().position.x,
-                                            scene.getCamera().position.y,
-                                            scene.getCamera().viewportWidth,
-                                            scene.getCamera().viewportHeight);
-      LightWorld.instance.update();
+      scene.setViewport(width, height);
     }
     
     for (Scene3D scene : scenes3D)
     {
       scene.setViewport(width, height);
-      scene.getCamera().update();
+    }
+ 
+    if (LightWorld.instance != null)
+    {
+      LightWorld.instance.useCustomViewport(0, 0, width, height);
     }
   }
 }

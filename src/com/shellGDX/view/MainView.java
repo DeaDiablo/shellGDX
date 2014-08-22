@@ -57,10 +57,10 @@ public class MainView
         getDebugRenderer().render(PhysicsWorld.instance, scene.getCamera().combined);
       }
       LightWorld.instance.setCombinedMatrix(scene.getCamera().combined,
-          scene.getCamera().position.x,
-          scene.getCamera().position.y,
-          scene.getCamera().viewportWidth,
-          scene.getCamera().viewportHeight);
+                                            scene.getCamera().position.x,
+                                            scene.getCamera().position.y,
+                                            scene.getCamera().viewportWidth,
+                                            scene.getCamera().viewportHeight);
       LightWorld.instance.update();
     }
 

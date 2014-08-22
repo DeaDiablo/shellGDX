@@ -18,7 +18,7 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 class LightMap
 {
   private ShaderProgram shadowShader;
-  FrameBuffer           frameBuffer;
+  protected FrameBuffer frameBuffer;
   private Mesh          lightMapMesh;
 
   private FrameBuffer   pingPongBuffer;
@@ -108,8 +108,7 @@ class LightMap
         blurShader.end();
 
       }
-      frameBuffer.end(
-                      rayHandler.viewportX,
+      frameBuffer.end(rayHandler.viewportX,
                       rayHandler.viewportY,
                       rayHandler.viewportWidth,
                       rayHandler.viewportHeight);

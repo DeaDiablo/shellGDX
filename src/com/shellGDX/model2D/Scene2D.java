@@ -114,4 +114,9 @@ public class Scene2D extends Stage
   public Group getRoot() {
     return root;
   }
+
+  public void setViewport(int width, int height)
+  {
+    getViewport().update(width, height);
+  }
 }

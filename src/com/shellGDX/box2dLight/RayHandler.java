@@ -100,8 +100,7 @@ public class RayHandler implements Disposable
    */
   public RayHandler(World world)
   {
-    this(world, Gdx.graphics.getWidth() / 4, Gdx.graphics
-                                                         .getHeight() / 4);
+    this(world, Gdx.graphics.getWidth() / 4, Gdx.graphics.getHeight() / 4);
   }
 
   /**
@@ -184,7 +183,7 @@ public class RayHandler implements Disposable
    * @see #setCombinedMatrix(Matrix4)
    */
   public void setCombinedMatrix(Matrix4 combined, float x, float y,
-      float viewPortWidth, float viewPortHeight)
+                                float viewPortWidth, float viewPortHeight)
   {
 
     System.arraycopy(combined.val, 0, this.combined.val, 0, 16);
@@ -301,8 +300,7 @@ public class RayHandler implements Disposable
 
     if (useLightMap)
     {
-      lightMap.frameBuffer.end(
-                               viewportX, viewportY,
+      lightMap.frameBuffer.end(viewportX, viewportY,
                                viewportWidth, viewportHeight);
       lightMap.render();
     }
