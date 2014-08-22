@@ -1,5 +1,6 @@
 package com.shellGDX.model2D;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -14,14 +15,25 @@ public class Scene2D extends Stage
 {
   protected int     zIndex = 0;
   protected Group2D root = null;
+  protected boolean resize = false;
 
   protected OrthographicCamera camera = null;
   protected Rectangle cameraRect = new Rectangle(0, 0, 0, 0);
+  
+  public Scene2D()
+  {
+    super(new ScalingViewport(Scaling.stretch, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
+    resize = true;
+    camera = (OrthographicCamera)getCamera();
+    root = new Group2D();
+    super.getRoot().addActor(root);
+  }
+  
     
   public Scene2D(float width, float height)
   {
     super(new ScalingViewport(Scaling.stretch, width, height));
-    
+    resize = false;
     camera = (OrthographicCamera)getCamera();
     root = new Group2D();
     super.getRoot().addActor(root);
@@ -85,6 +97,16 @@ public class Scene2D extends Stage
   public int getZIndex()
   {
     return this.zIndex;
+  }
+  
+  public void setResize(boolean resize)
+  {
+    this.resize = resize;
+  }
+
+  public boolean getResize()
+  {
+    return resize;
   }
   
   @Override
