@@ -1,31 +1,18 @@
 package com.shellGDX.utils.gleed;
 
-import com.badlogic.gdx.graphics.Color;
+import com.shellGDX.model2D.Model2D;
 
-public class LevelObject
+public class LevelObject extends Model2D
 {
-	String name = "";
-	boolean visible = true;
-	Color color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
 	Properties properties = new Properties();
+	
+	public LevelObject()
+	{
+	  super();
+	}
 
 	public Properties getProperties()
 	{
 		return properties;
-	}
-
-	public String getName()
-	{
-		return name;
-	}
-
-	public boolean getVisible()
-	{
-		return visible;
-	}
-
-	public Color getColor()
-	{
-		return color;
 	}
 }

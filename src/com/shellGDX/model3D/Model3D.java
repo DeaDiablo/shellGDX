@@ -34,10 +34,11 @@ public class Model3D extends ModelInstance implements Disposable
   private String                                     name;
   private boolean                                    visible        = true;
 
-  float                                              x, y, z;
-  float                                              scaleX         = 1, scaleY = 1, scaleZ = 1;
-  float                                              yaw            = 0f, pitch = 0f, roll = 0f;
-  Matrix4                                            rotationMatrix = new Matrix4();
+  protected float                                    x, y, z;
+  protected float                                    scaleX         = 1, scaleY = 1, scaleZ = 1;
+  protected float                                    maxScale       = 1;
+  protected float                                    yaw            = 0f, pitch = 0f, roll = 0f;
+  protected Matrix4                                  rotationMatrix = new Matrix4();
   private AnimationController                        animation;
 
   public Model3D()
@@ -263,13 +264,12 @@ public class Model3D extends ModelInstance implements Disposable
 
   public boolean isCullable(final Camera cam)
   {
-    return cam.frustum.sphereInFrustum(getTransform().getTranslation(position).add(center), radius);
+    return cam.frustum.sphereInFrustum(getTransform().getTranslation(position).add(center), radius * getMaxScale());
   }
 
   public boolean isVisible()
   {
     return visible;
-
   }
 
   /**
@@ -437,8 +437,9 @@ public class Model3D extends ModelInstance implements Disposable
   {
     this.scaleX = scaleX;
     this.scaleY = scaleY;
-    this.scaleZ = scaleZ;
+    this.scaleZ = scaleZ;   
     transform.setToScaling(scaleX, scaleY, scaleZ);
+    updateMaxScale();
   }
 
   public void setScale(float scale)
@@ -447,6 +448,7 @@ public class Model3D extends ModelInstance implements Disposable
     this.scaleY = scale;
     this.scaleZ = scale;
     transform.setToScaling(scaleX, scaleY, scaleZ);
+    updateMaxScale();
   }
 
   /** Adds the specified scale to the current scale. */
@@ -456,6 +458,7 @@ public class Model3D extends ModelInstance implements Disposable
     scaleY += scale;
     scaleZ += scale;
     transform.scl(scale); // re-implement this
+    updateMaxScale();
   }
 
   public void scale(float scaleX, float scaleY, float scaleZ)
@@ -464,6 +467,7 @@ public class Model3D extends ModelInstance implements Disposable
     this.scaleY += scaleY;
     this.scaleZ += scaleZ;
     transform.scl(scaleX, scaleY, scaleZ); // re-implement this
+    updateMaxScale();
   }
 
   public void setX(float x)
@@ -530,6 +534,20 @@ public class Model3D extends ModelInstance implements Disposable
   public float getScaleZ()
   {
     return scaleZ;
+  }
+  
+  public void updateMaxScale()
+  {
+    maxScale = scaleX;
+    if (scaleY > maxScale)
+      maxScale = scaleY;
+    if (scaleZ > maxScale)
+      maxScale = scaleZ;
+  }
+  
+  public float getMaxScale()
+  {
+    return maxScale;
   }
 
   /**

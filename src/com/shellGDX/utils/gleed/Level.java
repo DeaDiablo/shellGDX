@@ -1,14 +1,12 @@
 package com.shellGDX.utils.gleed;
 
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Array;
+import com.shellGDX.model2D.Group2D;
 import com.shellGDX.model2D.Scene2D;
 
-public class Level extends Actor
+public class Level extends Group2D
 {
   private Properties properties = new Properties();
   private Array<Layer> layers = new Array<Layer>();
@@ -68,18 +66,21 @@ public class Level extends Actor
 	protected Rectangle rectBound = new Rectangle();
 
 	@Override
-	public void draw(Batch batch, float parentAlpha)
+	public boolean update(float deltaTime)
 	{
+	  if (!super.update(deltaTime))
+	    return false;
+	  
     Scene2D scene = (Scene2D)getStage();
     if (scene == null)
-      return;
+      return false;
+    
+    clearChildren();
 	  
 	  for(Layer layer : layers)
 	  {
-	    if (!layer.visible)
+	    if (!layer.isVisible())
 	      continue;
-
-	    batch.setColor(layer.color.r, layer.color.g, layer.color.b, layer.color.a * parentAlpha);
 	    
 	    int blockX = (int)scene.getCamera().position.x / Settings.xGridSize;
 	    int blockY = (int)scene.getCamera().position.y / Settings.yGridSize;
@@ -90,45 +91,11 @@ public class Level extends Actor
 	      {
 	        Array<TextureElement> textures = layer.getTextures(blockX + i, blockY + j);
 	        if (textures != null && textures.size > 0)
-	        {
 	          for(TextureElement texture : textures)
-	          {
-	            float width = texture.region.getRegionWidth();
-	            float height = texture.region.getRegionHeight();
-	            
-	            bufferVec.set(0, 0);
-	            bufferVec = localToStageCoordinates(bufferVec);
-	            rectBound.set(bufferVec.x, bufferVec.y, 0, 0);
-
-	            bufferVec.set(width, 0);
-	            bufferVec = localToStageCoordinates(bufferVec);
-	            rectBound.merge(bufferVec);
-	            
-	            bufferVec.set(0, height);
-	            bufferVec = localToStageCoordinates(bufferVec);
-	            rectBound.merge(bufferVec);
-	            
-	            bufferVec.set(width, height);
-	            bufferVec = localToStageCoordinates(bufferVec);
-	            rectBound.merge(bufferVec);
-	            
-	            if (!scene.getCameraRectangle().overlaps(rectBound))
-	              continue;
-	            
-	            batch.draw(texture.region,
-	                       texture.position.x - texture.originX,
-	                       texture.position.y - texture.originY,
-	                       texture.originX,
-	                       texture.originY,
-	                       texture.region.getRegionWidth(),
-	                       texture.region.getRegionHeight(),
-	                       texture.scaleX,
-	                       texture.scaleY,
-	                       -MathUtils.radiansToDegrees * texture.rotation);
-	          }
-	        }
+	            addActor(texture);
 	      }
 	    }
 	  }
+	  return true;
   }
 }

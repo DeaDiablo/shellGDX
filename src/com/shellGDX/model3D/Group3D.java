@@ -55,65 +55,29 @@ public class Group3D extends Model3D
     visibleCount = 0;
     for (int i = 0, n = children.size; i < n; i++)
     {
+      Model3D child = models[i];
+      if (!child.isVisible())
+        continue;
+      
       if (models[i] instanceof Group3D)
       {
         ((Group3D) models[i]).drawChildren(modelBatch, environment);
       }
       else
       {
-        float offsetX = x, offsetY = y, offsetZ = z;
-        float offsetScaleX = scaleX, offsetScaleY = scaleY, offsetScaleZ = scaleZ;
-        float offsetYaw = yaw, offsetPitch = pitch, offsetRoll = roll;
-        x = 0;
-        y = 0;
-        z = 0;
-        scaleX = 0;
-        scaleY = 0;
-        scaleZ = 0;
-        yaw = 0;
-        pitch = 0;
-        roll = 0;
-        Model3D child = models[i];
-        if (!child.isVisible())
-          continue;
-        /*
-         * Matrix4 diff = sub(child.getTransform(), getTransform()); Matrix4
-         * childMatrix = child.getTransform().cpy();
-         * child.getTransform().set(add(diff, childMatrix));
-         * child.draw(modelBatch, environment);
-         */
-        float cx = child.x, cy = child.y, cz = child.z;
-        float sx = child.scaleX, sy = child.scaleY, sz = child.scaleZ;
-        float ry = child.yaw, rp = child.pitch, rr = child.roll;
-        // child.x = cx + offsetX;
-        // child.y = cy + offsetY;
-        // child.z = cz + offsetZ;
-        child.setPosition(cx + offsetX, cy + offsetY, cz + offsetZ);
-        child.setScale(sx + offsetScaleX, sy + offsetScaleY, sz + offsetScaleZ);
-        child.setRotation(ry + offsetYaw, rp + offsetPitch, rr + offsetRoll);
+        child.translate(x, y, z);
+        child.scale(scaleX, scaleY, scaleZ);
+        child.rotate(yaw, pitch, roll);
+
         if (child.isCullable(getScene3d().getCamera()))
         {
           child.draw(modelBatch, environment);
           visibleCount++;
         }
-        child.x = cx;
-        child.y = cy;
-        child.z = cz;
-        x = offsetX;
-        y = offsetY;
-        z = offsetZ;
-        child.scaleX = sx;
-        child.scaleY = sy;
-        child.scaleZ = sz;
-        scaleX = offsetScaleX;
-        scaleY = offsetScaleY;
-        scaleZ = offsetScaleZ;
-        child.yaw = ry;
-        child.pitch = rp;
-        child.roll = rr;
-        yaw = offsetYaw;
-        pitch = offsetPitch;
-        roll = offsetRoll;
+        
+        child.translate(-x, -y, -z);
+        child.scale(-scaleX, -scaleY, -scaleZ);
+        child.rotate(-yaw, -pitch, -roll);
       }
     }
     children.end();

@@ -162,8 +162,8 @@ public class LevelLoader extends AsynchronousAssetLoader<Level, LevelLoader.GLEE
 				TextureElement texture = new TextureElement();
 				loadElement(texture, item);
 				loadTextureElement(texture, item);
-				int xCoord = (int)texture.position.x / Settings.xGridSize;
-				int yCoord = (int)texture.position.y / Settings.yGridSize;
+				int xCoord = (int)texture.getX() / Settings.xGridSize;
+				int yCoord = (int)texture.getY() / Settings.yGridSize;
         layer.addTexture(xCoord, yCoord, texture);
 			}
 			else if (type.equals("PathItem"))
@@ -201,51 +201,51 @@ public class LevelLoader extends AsynchronousAssetLoader<Level, LevelLoader.GLEE
 	
 	private void loadElement(LevelObject levelObject, Element element)
   {
-		levelObject.name = element.getAttribute("Name", "");
-		levelObject.visible = Boolean.parseBoolean(element.getAttribute("Visible", "true"));
+		levelObject.setName(element.getAttribute("Name", ""));
+		levelObject.setVisible(Boolean.parseBoolean(element.getAttribute("Visible", "true")));
 		levelObject.properties.load(element);
 		
-		GameLog.instance.writeLog("Loading element: " + levelObject.name);
+		GameLog.instance.writeLog("Loading element: " + levelObject.getName());
 	}
 	
 	private void loadTextureElement(TextureElement texture, Element item)
   {
 		Element positionElement = item.getChildByName("Position");
-		texture.position.x = Float.parseFloat(positionElement.getChildByName("X").getText());
-		texture.position.y = -Float.parseFloat(positionElement.getChildByName("Y").getText());
+		texture.setX(Float.parseFloat(positionElement.getChildByName("X").getText()));
+		texture.setY(-Float.parseFloat(positionElement.getChildByName("Y").getText()));
 		
 		Element origin = item.getChildByName("Origin");
-		texture.originX = Float.parseFloat(origin.getChildByName("X").getText());
-		texture.originY = Float.parseFloat(origin.getChildByName("Y").getText());
+		texture.setOriginX(Float.parseFloat(origin.getChildByName("X").getText()));
+		texture.setOriginY(Float.parseFloat(origin.getChildByName("Y").getText()));
 		
 		Element scale = item.getChildByName("Scale");
-		texture.scaleX = Float.parseFloat(scale.getChildByName("X").getText());
-		texture.scaleY = Float.parseFloat(scale.getChildByName("Y").getText());
+		texture.setScaleX(Float.parseFloat(scale.getChildByName("X").getText()));
+		texture.setScaleY(Float.parseFloat(scale.getChildByName("Y").getText()));
 		
 		Element colorElement = item.getChildByName("TintColor");
-		texture.color.r = Float.parseFloat(colorElement.getChildByName("R").getText()) / 255.0f;
-		texture.color.g = Float.parseFloat(colorElement.getChildByName("G").getText()) / 255.0f;
-		texture.color.b = Float.parseFloat(colorElement.getChildByName("B").getText()) / 255.0f;
-		texture.color.a = Float.parseFloat(colorElement.getChildByName("A").getText()) / 255.0f;
+		texture.setColor(Float.parseFloat(colorElement.getChildByName("R").getText()) / 255.0f,
+		                 Float.parseFloat(colorElement.getChildByName("G").getText()) / 255.0f,
+		                 Float.parseFloat(colorElement.getChildByName("B").getText()) / 255.0f,
+		                 Float.parseFloat(colorElement.getChildByName("A").getText()) / 255.0f);
 		
-		texture.rotation = Float.parseFloat(item.getChildByName("Rotation").getText());
+		texture.setRotation(Float.parseFloat(item.getChildByName("Rotation").getText()));
 		
 		if (atlasFile.isEmpty())
     {
 			String[] pathParts = item.getChildByName("texture_filename").getText().split("\\\\");
 			texture.path = pathRoot + "/" + pathParts[pathParts.length - 1];
-			texture.region.setRegion(assetManager.get(texture.path, Texture.class));
+			texture.setTextureRegion(new TextureRegion(assetManager.get(texture.path, Texture.class)));
 		}
 		else
     {
 			String[] assetParts = item.getChildByName("asset_name").getText().split("\\\\");
 			texture.path = assetParts[assetParts.length - 1];
 			TextureRegion region = atlas.findRegion(texture.path);
-			texture.region.setRegion(region);
+			texture.setTextureRegion(region);
 		}
 		
-		texture.region.flip(Boolean.parseBoolean(item.getChildByName("FlipHorizontally").getText()),
-							Boolean.parseBoolean(item.getChildByName("FlipVertically").getText()));
+		texture.getTextureRegion().flip(Boolean.parseBoolean(item.getChildByName("FlipHorizontally").getText()),
+		                                Boolean.parseBoolean(item.getChildByName("FlipVertically").getText()));
 	}
 	
 	private void loadCircleElement(CircleElement circle, Element item)
@@ -253,14 +253,14 @@ public class LevelLoader extends AsynchronousAssetLoader<Level, LevelLoader.GLEE
 		Element position = item.getChildByName("Position");
 		
 		Element colorElement = item.getChildByName("FillColor");
-		circle.color.r = Float.parseFloat(colorElement.getChildByName("R").getText()) / 255.0f;
-		circle.color.g = Float.parseFloat(colorElement.getChildByName("G").getText()) / 255.0f;
-		circle.color.b = Float.parseFloat(colorElement.getChildByName("B").getText()) / 255.0f;
-		circle.color.a = Float.parseFloat(colorElement.getChildByName("A").getText()) / 255.0f;
+    circle.setColor(Float.parseFloat(colorElement.getChildByName("R").getText()) / 255.0f,
+                    Float.parseFloat(colorElement.getChildByName("G").getText()) / 255.0f,
+                    Float.parseFloat(colorElement.getChildByName("B").getText()) / 255.0f,
+                    Float.parseFloat(colorElement.getChildByName("A").getText()) / 255.0f);
 		
 		circle.circle = new Circle(new Vector2(Float.parseFloat(position.getChildByName("X").getText()),
-											   -Float.parseFloat(position.getChildByName("Y").getText())),
-											   Float.parseFloat(item.getChildByName("Radius").getText()));
+		                                       -Float.parseFloat(position.getChildByName("Y").getText())),
+		                                       Float.parseFloat(item.getChildByName("Radius").getText()));
 	}
 	
 	private void loadRectangleElement(RectangleElement rectangle, Element item)
@@ -268,10 +268,10 @@ public class LevelLoader extends AsynchronousAssetLoader<Level, LevelLoader.GLEE
 		Element position = item.getChildByName("Position");
 		
 		Element colorElement = item.getChildByName("FillColor");
-		rectangle.color.r = Float.parseFloat(colorElement.getChildByName("R").getText()) / 255.0f;
-		rectangle.color.g = Float.parseFloat(colorElement.getChildByName("G").getText()) / 255.0f;
-		rectangle.color.b = Float.parseFloat(colorElement.getChildByName("B").getText()) / 255.0f;
-		rectangle.color.a = Float.parseFloat(colorElement.getChildByName("A").getText()) / 255.0f;
+		rectangle.setColor(Float.parseFloat(colorElement.getChildByName("R").getText()) / 255.0f,
+		                   Float.parseFloat(colorElement.getChildByName("G").getText()) / 255.0f,
+		                   Float.parseFloat(colorElement.getChildByName("B").getText()) / 255.0f,
+		                   Float.parseFloat(colorElement.getChildByName("A").getText()) / 255.0f);
 		
 		rectangle.rectangle.x = Float.parseFloat(position.getChildByName("X").getText());
 		rectangle.rectangle.y = -Float.parseFloat(position.getChildByName("Y").getText());
@@ -296,10 +296,10 @@ public class LevelLoader extends AsynchronousAssetLoader<Level, LevelLoader.GLEE
 		path.lineWidth = Integer.parseInt(item.getChildByName("LineWidth").getText());
 		
 		Element colorElement = item.getChildByName("LineColor");
-		path.color.r = Float.parseFloat(colorElement.getChildByName("R").getText()) / 255.0f;
-		path.color.g = Float.parseFloat(colorElement.getChildByName("G").getText()) / 255.0f;
-		path.color.b = Float.parseFloat(colorElement.getChildByName("B").getText()) / 255.0f;
-		path.color.a = Float.parseFloat(colorElement.getChildByName("A").getText()) / 255.0f;
+    path.setColor(Float.parseFloat(colorElement.getChildByName("R").getText()) / 255.0f,
+                  Float.parseFloat(colorElement.getChildByName("G").getText()) / 255.0f,
+                  Float.parseFloat(colorElement.getChildByName("B").getText()) / 255.0f,
+                  Float.parseFloat(colorElement.getChildByName("A").getText()) / 255.0f);
 	}
 	
 	@Override

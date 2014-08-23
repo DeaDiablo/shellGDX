@@ -229,8 +229,9 @@ public class Model2D extends Actor
   
   @Override
   public void act(float delta)
-  {
-    updateBound();
+  { 
+    if (isVisible())
+      updateBound();
     super.act(delta);
     update(delta);  
   }

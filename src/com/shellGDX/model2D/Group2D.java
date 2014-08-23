@@ -115,8 +115,8 @@ public class Group2D extends Group
   @Override
   public void act(float delta)
   {
-    super.act(delta);
-    update(delta);  
+    if (update(delta))
+      super.act(delta);
   }
 
   //touch
