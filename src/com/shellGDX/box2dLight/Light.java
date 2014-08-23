@@ -48,6 +48,7 @@ public abstract class Light implements Disposable
   {
 
     rayHandler.lightList.add(this);
+    rayHandler.lightHashMap.put(this.hashCode(), this);
     this.rayHandler = rayHandler;
     setRayNum(rays);
     this.direction = directionDegree;
@@ -117,6 +118,7 @@ public abstract class Light implements Disposable
 
   public void remove()
   {
+    rayHandler.lightHashMap.remove(this);
     if (active)
     {
       rayHandler.lightList.removeValue(this, false);

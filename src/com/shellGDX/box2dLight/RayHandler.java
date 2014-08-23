@@ -1,5 +1,7 @@
 package com.shellGDX.box2dLight;
 
+import java.util.HashMap;
+
 import com.shellGDX.box2dLight.shaders.LightShader;
 
 import com.badlogic.gdx.Gdx;
@@ -48,6 +50,8 @@ public class RayHandler implements Disposable
    * NOTE: DO NOT MODIFY THIS LIST
    */
   final Array<Light>    lightList                = new Array<Light>(false, 16);
+  
+  final HashMap<Integer, Light> lightHashMap     = new HashMap<Integer, Light>();
 
   /**
    * This Array contain all the disabled lights.
@@ -347,6 +351,11 @@ public class RayHandler implements Disposable
     if (lightShader != null)
       lightShader.dispose();
   }
+  
+  public Light getLight(int hashCode)
+  {
+    return lightHashMap.get(hashCode);
+  }
 
   /**
    * Removes and disposes both all active and disabled lights
@@ -358,6 +367,7 @@ public class RayHandler implements Disposable
       light.dispose();
     }
     lightList.clear();
+    lightHashMap.clear();
 
     for (Light light : disabledLights)
     {
