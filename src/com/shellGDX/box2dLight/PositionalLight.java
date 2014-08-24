@@ -83,12 +83,15 @@ public abstract class PositionalLight extends Light
       staticUpdate();
   }
 
+  protected Vector2 startBuffer = new Vector2();
+  
   @Override
   void update()
   {
     if (body != null && !staticLight)
     {
       final Vector2 vec = body.getPosition();
+      vec.scl(rayHandler.meterToPixel);
       float angle = body.getAngle();
       final float cos = MathUtils.cos(angle);
       final float sin = MathUtils.sin(angle);
@@ -119,7 +122,9 @@ public abstract class PositionalLight extends Light
       my[i] = tmpEnd.y;
       if (rayHandler.world != null && !xray)
       {
-        rayHandler.world.rayCast(ray, start, tmpEnd);
+        startBuffer.set(start);
+        startBuffer.scl(rayHandler.pixelToMeter);
+        rayHandler.world.rayCast(ray, startBuffer, tmpEnd.scl(rayHandler.pixelToMeter));
       }
     }
     setMesh();

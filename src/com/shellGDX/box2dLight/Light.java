@@ -391,8 +391,8 @@ public abstract class Light implements Disposable
                                   return -1;
                                 // if (fixture.isSensor())
                                 // return -1;
-                                mx[m_index] = point.x;
-                                my[m_index] = point.y;
+                                mx[m_index] = point.x * rayHandler.meterToPixel;
+                                my[m_index] = point.y * rayHandler.meterToPixel;
                                 f[m_index] = fraction;
                                 return fraction;
                               }

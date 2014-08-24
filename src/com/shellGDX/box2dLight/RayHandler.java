@@ -608,5 +608,30 @@ public class RayHandler implements Disposable
   {
     return lightMap.frameBuffer;
   }
+  
+  
+  protected float pixelToMeter = 1.0f;
+  protected float meterToPixel = 1.0f;
 
+  public void setPixelToMeter(float value)
+  {
+    pixelToMeter = value;
+    meterToPixel = 1 / pixelToMeter;
+  }
+
+  public float getPixelToMeter()
+  {
+    return pixelToMeter;
+  }
+  
+  public void setMeterToPixel(float value)
+  {
+    meterToPixel = value;
+    pixelToMeter = 1 / meterToPixel;
+  }
+
+  public float getMeterToPixel()
+  {
+    return meterToPixel;
+  }
 }
