@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.utils.Array;
+import com.shellGDX.controller.LightWorld;
 import com.shellGDX.controller.PhysicsWorld;
 import com.shellGDX.manager.ResourceManager;
 import com.shellGDX.manager.ShaderManager;
@@ -56,6 +57,9 @@ public class MainView
         getDebugRenderer().render(PhysicsWorld.instance, scene.getCamera().combined);
       }
     }
+    
+    if (LightWorld.instance != null)
+      LightWorld.instance.render();
 
     Gdx.gl.glClear(GL30.GL_DEPTH_BUFFER_BIT);
     

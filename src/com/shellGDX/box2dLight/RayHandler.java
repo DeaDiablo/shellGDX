@@ -1,5 +1,6 @@
 package com.shellGDX.box2dLight;
 
+import java.util.Collection;
 import java.util.HashMap;
 
 import com.shellGDX.box2dLight.shaders.LightShader;
@@ -308,6 +309,10 @@ public class RayHandler implements Disposable
                                viewportWidth, viewportHeight);
       lightMap.render();
     }
+
+    Gdx.gl.glDepthMask(true);
+    Gdx.gl.glDisable(GL20.GL_BLEND);
+    Gdx.gl.glBlendFunc(GL20.GL_ONE, GL20.GL_ONE);
   }
 
   /**
@@ -350,6 +355,11 @@ public class RayHandler implements Disposable
       lightMap.dispose();
     if (lightShader != null)
       lightShader.dispose();
+  }
+  
+  public Collection<Light> getLights()
+  {
+    return lightHashMap.values();
   }
   
   public Light getLight(int hashCode)
