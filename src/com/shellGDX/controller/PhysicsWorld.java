@@ -6,8 +6,8 @@ import com.shellGDX.box2dLight.RayHandler;
 
 public class PhysicsWorld
 {
-  public static float   WORLD_TO_BOX = 0.001f;
-  public static float   BOX_TO_WORLD = 1000f;
+  public static float   WORLD_TO_BOX = 0.1f;
+  public static float   BOX_TO_WORLD = 10f;
 
   public static boolean debug        = false;
   public static boolean fixedTime    = false;

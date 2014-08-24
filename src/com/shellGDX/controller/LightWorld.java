@@ -32,13 +32,12 @@ public class LightWorld
       return;
 
     matrix.set(lightCamera.combined);
-    matrix.val[Matrix4.M03] *= LightWorld.WORLD_TO_BOX;
-    matrix.val[Matrix4.M13] *= LightWorld.WORLD_TO_BOX;
+    matrix.scale(BOX_TO_WORLD, BOX_TO_WORLD, BOX_TO_WORLD);
     LightWorld.instance.setCombinedMatrix(matrix,
-                                          lightCamera.position.x * LightWorld.WORLD_TO_BOX,
-                                          lightCamera.position.y * LightWorld.WORLD_TO_BOX,
-                                          lightCamera.viewportWidth * lightCamera.zoom * LightWorld.WORLD_TO_BOX,
-                                          lightCamera.viewportHeight * lightCamera.zoom * LightWorld.WORLD_TO_BOX);
+                                          lightCamera.position.x * WORLD_TO_BOX,
+                                          lightCamera.position.y * WORLD_TO_BOX,
+                                          lightCamera.viewportWidth * lightCamera.zoom * WORLD_TO_BOX,
+                                          lightCamera.viewportHeight * lightCamera.zoom * WORLD_TO_BOX);
     LightWorld.instance.update();
   }
   
