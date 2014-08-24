@@ -17,8 +17,8 @@ public class LightWorld
   {
     lightCamera = camera;
     instance = new RayHandler(PhysicsWorld.instance);
-    //instance.setBlur(true);
-    //instance.setShadows(true);
+    //instance.setBlur(false);
+    //instance.setShadows(false);
     instance.setCulling(true);
     instance.setAmbientLight(0.1f, 0.01f, 0.01f, 0.01f);
     matrix = new Matrix4();

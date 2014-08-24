@@ -11,6 +11,16 @@ public class Layer extends LevelObject
   private HashMap<String, Array<TextureElement>> textures = new HashMap<String, Array<TextureElement>>();
   private HashMap<String, Array<LevelObject>> objects = new HashMap<String, Array<LevelObject>>();
   
+  public HashMap<String, Array<TextureElement>> getTextures()
+  {
+    return textures;
+  }
+  
+  public HashMap<String, Array<LevelObject>> getObjects()
+  {
+    return objects;
+  }
+  
   public Array<TextureElement> getTextures(int x, int y)
   {
     return textures.get(String.format("%d %d", x, y));
@@ -21,9 +31,9 @@ public class Layer extends LevelObject
     return objects.get(String.format("%d %d", x, y));
   }
   
-  public void addTexture(int x, int y, TextureElement texture)
+  public void addTexture(TextureElement texture)
   {
-    String key = String.format("%d %d", x, y);
+    String key = String.format("%d %d", (int)texture.getX() / Settings.xGridSize, (int)texture.getY() / Settings.yGridSize);
     Array<TextureElement> arrayTexture = textures.get(key);
     if (arrayTexture == null)
     {
@@ -33,9 +43,9 @@ public class Layer extends LevelObject
     arrayTexture.add(texture);
   }
   
-  public void addObject(int x, int y, LevelObject object)
+  public void addObject(LevelObject object)
   {
-    String key = String.format("%d %d", x, y);
+    String key = String.format("%d %d", (int)object.getX() / Settings.xGridSize, (int)object.getY() / Settings.yGridSize);
     Array<LevelObject> arrayObject = objects.get(key);
     if (arrayObject == null)
     {

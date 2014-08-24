@@ -23,7 +23,8 @@ public class Group3D extends Model3D
     super(model);
   }
 
-  public void update(float delta)
+  @Override
+  public boolean update(float delta)
   {
     super.update(delta);
     Model3D[] models = children.begin();
@@ -32,6 +33,7 @@ public class Group3D extends Model3D
       models[i].update(delta);
     }
     children.end();
+    return isVisible();
   }
 
   /**
@@ -69,7 +71,7 @@ public class Group3D extends Model3D
         child.scale(scaleX, scaleY, scaleZ);
         child.rotate(yaw, pitch, roll);
 
-        if (child.isCullable(getScene3d().getCamera()))
+        if (child.isCullable(getScene3D().getCamera()))
         {
           child.draw(modelBatch, environment);
           visibleCount++;
@@ -94,7 +96,7 @@ public class Group3D extends Model3D
     model3D.remove();
     children.add(model3D);
     model3D.setParent(this);
-    model3D.setScene(getScene3d());
+    model3D.setScene(getScene3D());
     childrenChanged();
   }
 
@@ -109,7 +111,7 @@ public class Group3D extends Model3D
   {
     if (!children.removeValue(model3D, true))
       return false;
-    Scene3D scene = getScene3d();
+    Scene3D scene = getScene3D();
     if (scene != null)
       scene.unfocus(model3D);
     model3D.setParent(null);

@@ -101,12 +101,12 @@ public class ResourceManager extends AssetManager
     return get(fileName, TiledMap.class);
   }
 
-  public void loadGleed2dMap(String fileName)
+  public void loadGleed2DMap(String fileName)
   {
     load(fileName, Level.class);
   }
 
-  public Level getGleed2dMap(String fileName)
+  public Level getGleed2DMap(String fileName)
   {
     return get(fileName, Level.class);
   }
@@ -227,7 +227,7 @@ public class ResourceManager extends AssetManager
   @Override
   public synchronized <T> T get(String fileName)
   {
-    int index = fileName.lastIndexOf("/");    
+    int index = fileName.lastIndexOf("/");
     if (index != -1)
       fileName = fileName.substring(index + 1);
 

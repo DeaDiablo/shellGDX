@@ -154,6 +154,7 @@ public class Model2D extends Actor
   //offset
   public enum Align
   {
+    NONE,
     LEFT,
     RIGHT,
     CENTER,
@@ -180,6 +181,26 @@ public class Model2D extends Actor
   public Align getVertAlign()
   {
     return vAlign;
+  }
+  
+  public void setOffsetX(float x)
+  {
+    offset.x = x;
+    hAlign = Align.NONE;
+  }
+  
+  public void setOffsetY(float y)
+  {
+    offset.y = y;
+    vAlign = Align.NONE;
+  }
+  
+  public void setOffset(float x, float y)
+  {
+    offset.x = x;
+    offset.y = y;
+    hAlign = Align.NONE;
+    vAlign = Align.NONE;
   }
 
   public float getOffsetX()

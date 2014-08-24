@@ -20,8 +20,8 @@ import com.badlogic.gdx.utils.Disposable;
 
 public class Model3D extends ModelInstance implements Disposable
 {
-  private Scene3D                                    scene3d;
-  private Group3D                                    parent;
+  protected Scene3D                                  scene;
+  protected Group3D                                  parent;
 
   private final DelayedRemovalArray<Event3DListener> listeners      = new DelayedRemovalArray<Event3DListener>(0);
   private final Array<Action3D>                      actions        = new Array<Action3D>(0);
@@ -66,15 +66,15 @@ public class Model3D extends ModelInstance implements Disposable
 
   /**
    * Updates the model3d based on time. Typically this is called each frame by
-   * {@link Scene3D#act(float)}.
+   * {@link Scene3D#update(float)}.
    * <p>
-   * The default implementation calls {@link Action3D#act(float)} on each action
+   * The default implementation calls {@link Action3D#update(float)} on each action
    * and removes actions that are complete.
    * 
    * @param delta
    *          Time in seconds since the last frame.
    */
-  public void update(float delta)
+  public boolean update(float delta)
   {
     for (int i = 0; i < actions.size; i++)
     {
@@ -88,6 +88,8 @@ public class Model3D extends ModelInstance implements Disposable
     }
     if (animation.inAction)
       animation.update(delta);
+    
+    return isVisible();
   }
 
   public void draw(ModelBatch modelBatch, Environment environment)
@@ -186,16 +188,16 @@ public class Model3D extends ModelInstance implements Disposable
    */
   protected void setScene(Scene3D scene3d)
   {
-    this.scene3d = scene3d;
+    this.scene = scene3d;
   }
 
   /**
    * Returns the scene3d that this model3d is currently in, or null if not in a
    * scene.
    */
-  public Scene3D getScene3d()
+  public Scene3D getScene3D()
   {
-    return scene3d;
+    return scene;
   }
 
   /**
