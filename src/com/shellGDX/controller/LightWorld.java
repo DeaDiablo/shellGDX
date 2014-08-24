@@ -6,6 +6,8 @@ import com.shellGDX.box2dLight.RayHandler;
 
 public class LightWorld
 {
+  public static final long dayDuration = 2; // minutes
+
   public static float   WORLD_TO_BOX = PhysicsWorld.WORLD_TO_BOX;
   public static float   BOX_TO_WORLD = PhysicsWorld.BOX_TO_WORLD;
   
@@ -17,10 +19,10 @@ public class LightWorld
   {
     lightCamera = camera;
     instance = new RayHandler(PhysicsWorld.instance);
-    //instance.setBlur(false);
-    //instance.setShadows(false);
+    instance.setBlur(true);
+    instance.setShadows(true);
     instance.setCulling(true);
-    instance.setAmbientLight(0.1f, 0.01f, 0.01f, 0.01f);
+    instance.setAmbientLight(0.001f, 0.001f, 0.001f, 0.001f);
     matrix = new Matrix4();
   }
   
