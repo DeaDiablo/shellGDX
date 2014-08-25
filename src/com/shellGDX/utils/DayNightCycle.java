@@ -34,15 +34,20 @@ public class DayNightCycle
     return minutes;
   }
   
+  public final Color getDayColor()
+  {
+    return dayColor;
+  }
+  
   private float switchTime = 0.0f;
   private float switchDuration = 0.0f;
   
   private boolean currentClearWeather = true;
   private float deltaWeather = 60.0f;
   private float factorWeather = 0.0f;
-  private Color dayColor = new Color();
-  private Color startColor = new Color();
-  private Color endColor = new Color();
+  final private Color dayColor = new Color();
+  final private Color startColor = new Color();
+  final private Color endColor = new Color();
 
   public void update(float deltaTime, boolean clearWeather)
   {
@@ -81,7 +86,8 @@ public class DayNightCycle
     dayColor.g = startColor.g + (endColor.g - startColor.g) * (switchDuration - switchTime) / switchDuration;
     dayColor.b = startColor.b + (endColor.b - startColor.b) * (switchDuration - switchTime) / switchDuration;
 
-    LightWorld.instance.setAmbientLight(dayColor.r + factorWeather, dayColor.g + factorWeather, dayColor.b + factorWeather, 1.0f);
+    if (LightWorld.instance != null)
+      LightWorld.instance.setAmbientLight(dayColor.r + factorWeather, dayColor.g + factorWeather, dayColor.b + factorWeather, 1.0f);
   }
   
   protected void updateColor(Color color, float hours)
