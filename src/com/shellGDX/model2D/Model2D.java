@@ -152,20 +152,20 @@ public class Model2D extends Actor
   }
   
   //offset
-  public enum Align
+  public class Align
   {
-    NONE,
-    LEFT,
-    RIGHT,
-    CENTER,
-    TOP,
-    BOTTOM
+    public static final int NONE = 0;
+    public static final int LEFT = 1;
+    public static final int RIGHT = 2;
+    public static final int CENTER = 3;
+    public static final int TOP = 4;
+    public static final int BOTTOM = 5;
   }
 
-  protected Align hAlign = Align.CENTER, vAlign = Align.CENTER;
+  protected int hAlign = Align.CENTER, vAlign = Align.CENTER;
   protected Vector2 offset = new Vector2();
 
-  public void setAlign(Align horzAlign, Align vertAlign)
+  public void setAlign(int horzAlign, int vertAlign)
   {
     hAlign = horzAlign;
     vAlign = vertAlign;
@@ -173,12 +173,12 @@ public class Model2D extends Actor
       calcOffset(region.getRegionWidth(), region.getRegionHeight());
   }
 
-  public Align getHorzAlign()
+  public int getHorzAlign()
   {
     return hAlign;
   }
 
-  public Align getVertAlign()
+  public int getVertAlign()
   {
     return vAlign;
   }
@@ -217,10 +217,10 @@ public class Model2D extends Actor
   {
     switch (hAlign)
     {
-      case LEFT:
+      case Align.LEFT:
         offset.x = 0.0f;
         break;
-      case RIGHT:
+      case Align.RIGHT:
         offset.x = -width;
         break;
       default:
@@ -230,10 +230,10 @@ public class Model2D extends Actor
 
     switch (vAlign)
     {
-      case BOTTOM:
+      case Align.BOTTOM:
         offset.y = 0.0f;
         break;
-      case TOP:
+      case Align.TOP:
         offset.y = -height;
         break;
       default:
