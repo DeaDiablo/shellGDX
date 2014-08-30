@@ -4,8 +4,8 @@ import java.util.HashMap;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.shellGDX.box2dLight.LightWorld2D;
 import com.shellGDX.box2dLight.RayHandler;
-import com.shellGDX.controller.LightWorld;
 
 public abstract class LightModel2D extends PhysicsModel2D
 {
@@ -65,7 +65,7 @@ public abstract class LightModel2D extends PhysicsModel2D
     super.setVisible(visible);
     for(int hash : lights.values())
     {
-      LightWorld.instance.getLight(hash).setActive(visible);
+      LightWorld2D.instance.getLight(hash).setActive(visible);
     }
   }
   
@@ -73,18 +73,18 @@ public abstract class LightModel2D extends PhysicsModel2D
   protected void setStage(Stage stage)
   {
     super.setStage(stage);
-    if (LightWorld.instance != null)
-      initLightObject(LightWorld.instance);
+    if (LightWorld2D.instance != null)
+      initLightObject(LightWorld2D.instance);
   }
   
   @Override
   public boolean remove()
   {
-    if (LightWorld.instance != null && !lights.isEmpty())
+    if (LightWorld2D.instance != null && !lights.isEmpty())
     {
       for(int hash : lights.values())
       {
-        LightWorld.instance.getLight(hash).remove();
+        LightWorld2D.instance.getLight(hash).remove();
       }
     }
     return super.remove();

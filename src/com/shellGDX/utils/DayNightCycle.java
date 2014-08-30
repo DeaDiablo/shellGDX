@@ -2,7 +2,7 @@ package com.shellGDX.utils;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.MathUtils;
-import com.shellGDX.controller.LightWorld;
+import com.shellGDX.box2dLight.LightWorld2D;
 
 public class DayNightCycle
 {
@@ -86,8 +86,8 @@ public class DayNightCycle
     dayColor.g = startColor.g + (endColor.g - startColor.g) * (switchDuration - switchTime) / switchDuration;
     dayColor.b = startColor.b + (endColor.b - startColor.b) * (switchDuration - switchTime) / switchDuration;
 
-    if (LightWorld.instance != null)
-      LightWorld.instance.setAmbientLight(dayColor.r + factorWeather, dayColor.g + factorWeather, dayColor.b + factorWeather, 1.0f);
+    if (LightWorld2D.instance != null)
+      LightWorld2D.instance.setAmbientLight(dayColor.r + factorWeather, dayColor.g + factorWeather, dayColor.b + factorWeather, 1.0f);
   }
   
   protected void updateColor(Color color, float hours)

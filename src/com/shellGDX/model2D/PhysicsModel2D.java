@@ -9,12 +9,12 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.shellGDX.controller.PhysicsWorld;
+import com.shellGDX.controller.PhysicsWorld2D;
 
 public abstract class PhysicsModel2D extends Model2D
 {
-  public static final float WORLD_TO_BOX  = PhysicsWorld.WORLD_TO_BOX;
-  public static final float BOX_TO_WORLD  = PhysicsWorld.BOX_TO_WORLD;
+  public static final float WORLD_TO_BOX  = PhysicsWorld2D.WORLD_TO_BOX;
+  public static final float BOX_TO_WORLD  = PhysicsWorld2D.BOX_TO_WORLD;
 
   protected BodyDef         bodyDef       = new BodyDef();
   protected FixtureDef      fixtureDef    = new FixtureDef();
@@ -108,16 +108,16 @@ public abstract class PhysicsModel2D extends Model2D
   protected void setStage(Stage stage)
   {
     super.setStage(stage);
-    if (PhysicsWorld.instance != null)
-      initPhysicsObject(PhysicsWorld.instance);
+    if (PhysicsWorld2D.instance != null)
+      initPhysicsObject(PhysicsWorld2D.instance);
   }
   
   @Override
   public boolean remove()
   {
-    if (body != null && PhysicsWorld.instance != null)
+    if (body != null && PhysicsWorld2D.instance != null)
     {
-      PhysicsWorld.instance.destroyBody(body);
+      PhysicsWorld2D.instance.destroyBody(body);
       body = null;
     }
     return super.remove();

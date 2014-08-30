@@ -12,9 +12,9 @@ import com.badlogic.gdx.physics.box2d.Body;
 
 public abstract class PositionalLight extends Light
 {
-  private Body  body;
-  private float bodyOffsetX;
-  private float bodyOffsetY;
+  protected Body  body;
+  protected float bodyOffsetX;
+  protected float bodyOffsetY;
   final float   sin[];
   final float   cos[];
 

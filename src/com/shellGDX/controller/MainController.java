@@ -3,6 +3,7 @@ package com.shellGDX.controller;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.utils.Array;
+import com.shellGDX.box2dLight.LightWorld2D;
 import com.shellGDX.manager.SoundManager;
 import com.shellGDX.model2D.Scene2D;
 import com.shellGDX.model3D.Scene3D;
@@ -78,7 +79,7 @@ public class MainController extends InputMultiplexer
   {
     TimeController.update(deltaTime);
     SoundManager.instance.update();
-    PhysicsWorld.update(deltaTime);
+    PhysicsWorld2D.update(deltaTime);
 
     // update elements
     for (Scene2D scene : scenes2D)
@@ -91,7 +92,7 @@ public class MainController extends InputMultiplexer
       scene.act(deltaTime);
     }
     
-    LightWorld.update();
+    LightWorld2D.update();
   }
 
   public void clear()
@@ -106,8 +107,8 @@ public class MainController extends InputMultiplexer
       removeScene3D(scene);
     scenes3D.clear();
     
-    PhysicsWorld.destroy();
-    LightWorld.destroy();
+    PhysicsWorld2D.destroy();
+    LightWorld2D.destroy();
   }
 
   public void resize(int width, int height)
@@ -124,9 +125,9 @@ public class MainController extends InputMultiplexer
         scene.setViewport(width, height);
     }
  
-    if (LightWorld.instance != null)
+    if (LightWorld2D.instance != null)
     {
-      LightWorld.instance.useCustomViewport(0, 0, width, height);
+      LightWorld2D.instance.useCustomViewport(0, 0, width, height);
     }
   }
 }

@@ -1,16 +1,16 @@
 package com.shellGDX.view;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL30;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.utils.Array;
-import com.shellGDX.controller.LightWorld;
-import com.shellGDX.controller.PhysicsWorld;
+import com.shellGDX.box2dLight.LightWorld2D;
+import com.shellGDX.controller.PhysicsWorld2D;
 import com.shellGDX.manager.ResourceManager;
-import com.shellGDX.manager.ShaderManager;
 import com.shellGDX.model2D.Scene2D;
 import com.shellGDX.model3D.Scene3D;
+import com.shellGDX.shader.ShaderManager;
 
 public class MainView
 {
@@ -47,25 +47,32 @@ public class MainView
     ShaderManager.instance.clear();
   }
 
-  public void draw(Array<Scene2D> scenes2D, Array<Scene3D> scenes3D)
+  public void draw2DScenes(Array<Scene2D> scenes2D)
   {
     for(Scene2D scene : scenes2D)
-    {
       scene.draw();
-      if (PhysicsWorld.debug && PhysicsWorld.instance != null)
-      {
-        getDebugRenderer().render(PhysicsWorld.instance, scene.getCamera().combined);
-      }
-    }
-    
-    if (LightWorld.instance != null)
-      LightWorld.instance.render();
-
-    Gdx.gl.glClear(GL30.GL_DEPTH_BUFFER_BIT);
-    
+  }
+  
+  public void draw3DScenes(Array<Scene3D> scenes3D)
+  {
     for(Scene3D scene : scenes3D)
-    {
       scene.draw();
+  }
+  
+  public void drawPhysicsDebug(Camera camera)
+  {
+    if (PhysicsWorld2D.debug && PhysicsWorld2D.instance != null)
+    {
+      Matrix4 worldMatrix = new Matrix4();
+      worldMatrix.set(camera.combined);
+      worldMatrix.scale(PhysicsWorld2D.BOX_TO_WORLD, PhysicsWorld2D.BOX_TO_WORLD, PhysicsWorld2D.BOX_TO_WORLD);
+      getDebugRenderer().render(PhysicsWorld2D.instance, worldMatrix);
     }
+  }
+  
+  public void drawLightWorld()
+  {
+    if (LightWorld2D.instance != null)
+      LightWorld2D.instance.render();
   }
 }

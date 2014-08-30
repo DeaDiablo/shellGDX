@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
+import com.badlogic.gdx.graphics.g3d.Shader;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
 import com.badlogic.gdx.math.Matrix4;
@@ -91,9 +92,31 @@ public class Model3D extends ModelInstance implements Disposable
     
     return isVisible();
   }
-
-  public void draw(ModelBatch modelBatch, Environment environment)
+  
+  protected Shader shader = null;
+  
+  public void setShader(Shader shader)
   {
+    this.shader = shader;
+  }
+  
+  public Shader getShader()
+  {
+    return shader;
+  }
+  
+  public void draw(ModelBatch modelBatch, Environment environment, Shader shader)
+  {
+    Shader renderShader = shader;
+    if (this.shader != null)
+      renderShader = this.shader;
+    
+    if (renderShader != null)
+    {
+      modelBatch.render(this, renderShader);
+      return;
+    }
+    
     modelBatch.render(this, environment);
   }
 
