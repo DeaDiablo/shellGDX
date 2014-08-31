@@ -11,6 +11,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -80,6 +81,10 @@ public class ResourceManager extends AssetManager
           else if (extension.compareToIgnoreCase(".obj") == 0)
           {
             loadModel(path);
+          }
+          else if (extension.compareToIgnoreCase(".p") == 0)
+          {
+            loadParticleEffect(path);
           }
         }
       }
@@ -167,6 +172,16 @@ public class ResourceManager extends AssetManager
   public Model getModel(String fileName)
   {
     return get(fileName, Model.class);
+  }
+  
+  public void loadParticleEffect(String fileName)
+  {
+    load(fileName, ParticleEffect.class);
+  }
+  
+  public ParticleEffect getEffect(String fileName)
+  {
+    return get(fileName, ParticleEffect.class);
   }
 
   @Override

@@ -2,62 +2,34 @@ package com.shellGDX.model2D;
 
 import java.util.HashMap;
 
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.shellGDX.box2dLight.RayHandler;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.shellGDX.controller.LightWorld;
 
-public abstract class LightModel2D extends PhysicsModel2D
+public class LightModel2D extends Actor
 {
   protected HashMap<String, Integer> lights = new HashMap<String, Integer>();
   
   public LightModel2D()
   {
-    this(0, 0, 0, 1, 1);
+    this(0, 0, 0);
   }
 
   public LightModel2D(float x, float y)
   {
-    this(x, y, 0, 1, 1);
+    this(x, y, 0);
   }
 
   public LightModel2D(float x, float y, float angle)
   {
-    this(x, y, angle, 1, 1);
-  }
-
-  public LightModel2D(float x, float y, float angle, float scaleX, float scaleY)
-  {
     super();
     setPosition(x, y);
     setRotation(angle);
-    setScale(scaleX, scaleY);
-  }
-
-  public LightModel2D(TextureRegion textureRegion)
-  {
-    this(textureRegion, 0, 0, 0, 1, 1);
-  }
-
-  public LightModel2D(TextureRegion textureRegion, float x, float y)
-  {
-    this(textureRegion, x, y, 0, 1, 1);
-  }
-
-  public LightModel2D(TextureRegion textureRegion, float x, float y, float angle)
-  {
-    this(textureRegion, x, y, angle, 1, 1);
-  }
-
-  public LightModel2D(TextureRegion textureRegion, float x, float y, float angle, float scaleX, float scaleY)
-  {
-    super(textureRegion);
-    setPosition(x, y);
-    setRotation(angle);
-    setScale(scaleX, scaleY);
   }
   
-  public abstract boolean initLightObject(RayHandler rayHandler);
+  public void addLight(String name, Integer hash)
+  {
+    lights.put(name, hash);
+  }
   
   @Override
   public void setVisible(boolean visible)
@@ -70,23 +42,26 @@ public abstract class LightModel2D extends PhysicsModel2D
   }
   
   @Override
-  protected void setStage(Stage stage)
+  public void act(float delta)
   {
-    super.setStage(stage);
-    if (LightWorld.instance != null)
-      initLightObject(LightWorld.instance);
+    super.act(delta);
+
+    for(int hash : lights.values())
+    {
+      LightWorld.instance.getLight(hash).setPosition(getX(), getY());
+    }
   }
   
   @Override
   public boolean remove()
   {
-    if (LightWorld.instance != null && !lights.isEmpty())
+    /*if (LightWorld.instance != null && !lights.isEmpty())
     {
       for(int hash : lights.values())
       {
         LightWorld.instance.getLight(hash).remove();
       }
-    }
+    }*/
     return super.remove();
   }
 }
