@@ -16,6 +16,7 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.utils.SnapshotArray;
 
 /**
  * Handler that manages everything related to lights updating and rendering
@@ -50,9 +51,9 @@ public class RayHandler implements Disposable
    * <p>
    * NOTE: DO NOT MODIFY THIS LIST
    */
-  final Array<Light>    lightList                = new Array<Light>(false, 16);
+  final Array<Light2D>    lightList                = new Array<Light2D>(false, 16);
   
-  final HashMap<Integer, Light> lightHashMap     = new HashMap<Integer, Light>();
+  final HashMap<Integer, Light2D> lightHashMap     = new HashMap<Integer, Light2D>();
 
   /**
    * This Array contain all the disabled lights.
@@ -60,7 +61,7 @@ public class RayHandler implements Disposable
    * <p>
    * NOTE: DO NOT MODIFY THIS LIST
    */
-  final Array<Light>    disabledLights           = new Array<Light>(false, 16);
+  final Array<Light2D>    disabledLights           = new Array<Light2D>(false, 16);
 
   final LightMap        lightMap;
   final ShaderProgram   lightShader;
@@ -253,7 +254,7 @@ public class RayHandler implements Disposable
    */
   public void update()
   {
-    for (Light light : lightList)
+    for (Light2D light : lightList)
     {
       light.update();
     }
@@ -296,7 +297,7 @@ public class RayHandler implements Disposable
     lightShader.begin();
     {
       lightShader.setUniformMatrix("u_projTrans", combined);
-      for (Light light : lightList)
+      for (Light2D light : lightList)
       {
         light.render();
       }
@@ -322,7 +323,7 @@ public class RayHandler implements Disposable
    */
   public boolean pointAtLight(float x, float y)
   {
-    for (Light light : lightList)
+    for (Light2D light : lightList)
     {
       if (light.contains(x, y))
         return true;
@@ -337,7 +338,7 @@ public class RayHandler implements Disposable
    */
   public boolean pointAtShadow(float x, float y)
   {
-    for (Light light : lightList)
+    for (Light2D light : lightList)
     {
       if (light.contains(x, y))
         return false;
@@ -357,14 +358,77 @@ public class RayHandler implements Disposable
       lightShader.dispose();
   }
   
-  public Collection<Light> getLights()
+  public Collection<Light2D> getLights()
   {
     return lightHashMap.values();
   }
   
-  public Light getLight(int hashCode)
+  public Light2D getLight(int hashCode)
   {
     return lightHashMap.get(hashCode);
+  }
+  
+  public SnapshotArray<Integer> addLights(SnapshotArray<Light2D> lights)
+  {
+    SnapshotArray<Integer> hashArray = new SnapshotArray<Integer>(false, lights.size);
+
+    if (lights.size > 0)
+    {
+      lightList.addAll(lights);
+      Light2D[] lights2D = lights.begin();
+      for (int i = 0, n = lights.size; i < n; i++)
+      {
+        Light2D light = lights2D[i];
+  
+        int hash = light.hashCode();
+        hashArray.add(hash);
+        lightHashMap.put(hash, light);
+      }
+      lights.end();
+    }
+
+    return hashArray;
+  }
+  
+  public Integer addLight(Light2D light)
+  {
+    lightList.add(light);
+    int hash = light.hashCode();
+    lightHashMap.put(hash, light);
+    return hash;
+  }
+  
+  public void removeLights(SnapshotArray<Light2D> lights)
+  {
+    if (lights.size > 0)
+    {
+      Light2D[] lights2D = lights.begin();
+      for (int i = 0, n = lights.size; i < n; i++)
+        removeLight(lights2D[i]);
+      lights.end();
+    }
+  }
+  
+  public void removeLight(int hash)
+  {
+    removeLight(lightHashMap.get(hash));
+  }
+  
+  public void removeLight(Light2D light)
+  {
+    if (light == null)
+      return;
+    
+    lightHashMap.remove(light);
+    if (light.isActive())
+    {
+      lightList.removeValue(light, false);
+    }
+    else
+    {
+      disabledLights.removeValue(light, false);
+    }
+    light.dispose();
   }
 
   /**
@@ -372,14 +436,14 @@ public class RayHandler implements Disposable
    */
   public void removeAll()
   {
-    for (Light light : lightList)
+    for (Light2D light : lightList)
     {
       light.dispose();
     }
     lightList.clear();
     lightHashMap.clear();
 
-    for (Light light : disabledLights)
+    for (Light2D light : disabledLights)
     {
       light.dispose();
     }

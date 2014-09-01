@@ -11,27 +11,27 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Array;
 import com.shellGDX.manager.ResourceManager;
 
-public class EffectModel2D extends Actor
+public class EffectObject2D extends Actor
 {
   private static final HashMap<String, ParticleEffectPool> particlePools = new HashMap<String, ParticleEffectPool>();
   private final Array<PooledEffect> effects = new Array<PooledEffect>();
 
-  public EffectModel2D()
+  public EffectObject2D()
   {
     this(0, 0, 0, 1, 1);
   }
 
-  public EffectModel2D(float x, float y)
+  public EffectObject2D(float x, float y)
   {
     this(x, y, 0, 1, 1);
   }
 
-  public EffectModel2D(float x, float y, float angle)
+  public EffectObject2D(float x, float y, float angle)
   {
     this(x, y, angle, 1, 1);
   }
 
-  public EffectModel2D(float x, float y, float angle, float scaleX, float scaleY)
+  public EffectObject2D(float x, float y, float angle, float scaleX, float scaleY)
   {
     super();
     setPosition(x, y);

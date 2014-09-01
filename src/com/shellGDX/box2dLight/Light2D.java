@@ -13,7 +13,7 @@ import com.badlogic.gdx.utils.Disposable;
  * @author kalle
  * 
  */
-public abstract class Light implements Disposable
+public abstract class Light2D implements Disposable
 {
   static final Color   DefaultColor     = new Color(0.75f, 0.75f, 0.5f, 0.75f);
   private boolean      active           = true;
@@ -43,12 +43,8 @@ public abstract class Light implements Disposable
   float[]              f;
   int                  m_index          = 0;
 
-  public Light(RayHandler rayHandler, int rays, Color color, float directionDegree,
-      float distance)
+  public Light2D(RayHandler rayHandler, int rays, Color color, float directionDegree, float distance)
   {
-
-    rayHandler.lightList.add(this);
-    rayHandler.lightHashMap.put(this.hashCode(), this);
     this.rayHandler = rayHandler;
     setRayNum(rays);
     this.direction = directionDegree;
@@ -115,20 +111,6 @@ public abstract class Light implements Disposable
   abstract void render();
 
   public abstract void setDirection(float directionDegree);
-
-  public void remove()
-  {
-    rayHandler.lightHashMap.remove(this);
-    if (active)
-    {
-      rayHandler.lightList.removeValue(this, false);
-    }
-    else
-    {
-      rayHandler.disabledLights.removeValue(this, false);
-    }
-    dispose();
-  }
 
   public void dispose()
   {

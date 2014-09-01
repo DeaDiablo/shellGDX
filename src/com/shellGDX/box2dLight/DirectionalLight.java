@@ -10,7 +10,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 
-public class DirectionalLight extends Light
+public class DirectionalLight extends Light2D
 {
   float         sin;
   float         cos;
@@ -43,12 +43,12 @@ public class DirectionalLight extends Light
     }
     setDirection(direction);
 
-    lightMesh = new Mesh(VertexDataType.VertexArray, staticLight, vertexNum, 0, new VertexAttribute(Usage.Position, 2,
-                                                                                                    "vertex_positions"), new VertexAttribute(Usage.ColorPacked, 4, "quad_colors"),
-                         new VertexAttribute(Usage.Generic, 1, "s"));
-    softShadowMesh = new Mesh(VertexDataType.VertexArray, staticLight, vertexNum, 0, new VertexAttribute(Usage.Position, 2,
-                                                                                                         "vertex_positions"), new VertexAttribute(Usage.ColorPacked, 4, "quad_colors"),
-                              new VertexAttribute(Usage.Generic, 1, "s"));
+    lightMesh = new Mesh(VertexDataType.VertexArray, staticLight, vertexNum, 0, new VertexAttribute(Usage.Position, 2, "vertex_positions"),
+                                                                                new VertexAttribute(Usage.ColorPacked, 4, "quad_colors"),
+                                                                                new VertexAttribute(Usage.Generic, 1, "s"));
+    softShadowMesh = new Mesh(VertexDataType.VertexArray, staticLight, vertexNum, 0, new VertexAttribute(Usage.Position, 2, "vertex_positions"),
+                                                                                     new VertexAttribute(Usage.ColorPacked, 4, "quad_colors"),
+                                                                                     new VertexAttribute(Usage.Generic, 1, "s"));
     update();
   }
 

@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.SnapshotArray;
 import com.shellGDX.utils.Shader;
 
 public class Group2D extends Group
@@ -71,24 +72,29 @@ public class Group2D extends Group
   public Rectangle getBound()
   {
     Rectangle bound = new Rectangle(0, 0, 0, 0);
-    Array<Actor> children = getChildren();
+    
+    SnapshotArray<Actor> children = getChildren();
     if (children.size <= 0)
       return bound;
     
-    for(Actor child : children)
+    Actor[] actors = children.begin();
+    for (int i = 0, n = children.size; i < n; i++)
     {
+      Actor child = actors[i];
       if (child instanceof Group2D)
       {
         Group2D group = (Group2D) child;
         bound.merge(group.getBound());
       }
       
-      if (child instanceof Model2D)
+      if (child instanceof ModelObject2D)
       {
-        Model2D model = (Model2D) child;
+        ModelObject2D model = (ModelObject2D) child;
         bound.merge(model.getBound());
       }
     }
+    children.end();
+
     return bound;
   }
   
@@ -105,6 +111,21 @@ public class Group2D extends Group
       }
     }
     super.addActor(actor);
+  }
+  
+  @Override
+  public void setVisible(boolean visible)
+  {
+    super.setVisible(visible);
+    
+    SnapshotArray<Actor> children = getChildren();
+    if (children.size <= 0)
+      return;
+    
+    Actor[] actors = children.begin();
+    for (int i = 0, n = children.size; i < n; i++)
+      actors[i].setVisible(visible);
+    children.end();
   }
 
   public boolean update(float deltaTime)

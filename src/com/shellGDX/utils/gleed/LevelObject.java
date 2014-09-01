@@ -1,8 +1,8 @@
 package com.shellGDX.utils.gleed;
 
-import com.shellGDX.model2D.Model2D;
+import com.shellGDX.model2D.ModelObject2D;
 
-public class LevelObject extends Model2D
+public class LevelObject extends ModelObject2D
 {
   Properties properties = new Properties();
   
