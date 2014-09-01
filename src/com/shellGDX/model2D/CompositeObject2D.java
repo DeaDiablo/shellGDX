@@ -3,7 +3,6 @@ package com.shellGDX.model2D;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.SnapshotArray;
 import com.shellGDX.box2dLight.Light2D;
 import com.shellGDX.box2dLight.RayHandler;
@@ -69,10 +68,10 @@ public abstract class CompositeObject2D extends Group2D
     }
   }
   
-  public void attachModel(Actor model, float offsetX, float offsetY)
+  public void attachPhysicBody(float offsetX, float offsetY)
   {
     if (physicObject != null)
-      physicObject.attachModel(model, offsetX, offsetY);
+      physicObject.attachModel(this, offsetX, offsetY);
   }
   
   protected Body initPhysic(World physicsWorls)

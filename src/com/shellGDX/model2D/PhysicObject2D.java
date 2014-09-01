@@ -1,5 +1,6 @@
 package com.shellGDX.model2D;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
@@ -15,7 +16,6 @@ public abstract class PhysicObject2D extends Actor
                      offsetY       = 0;
   
   protected Body     body          = null;
-  protected boolean  fixedRotation = false;
 
   public PhysicObject2D()
   {
@@ -51,18 +51,6 @@ public abstract class PhysicObject2D extends Actor
   {
     return body;
   }
-  
-  public boolean getFixedRotation()
-  {
-    return fixedRotation;
-  }
-  
-  public void setFixedRotation(boolean fixedRotation)
-  {
-    this.fixedRotation = fixedRotation;
-    if (body != null)
-      body.setFixedRotation(fixedRotation);
-  }
 
   protected Vector2 newPosition = new Vector2();
   protected float   newAngle = 0.0f;
@@ -80,8 +68,8 @@ public abstract class PhysicObject2D extends Actor
         newPosition = body.getPosition();
         modelObject.setPosition(newPosition.x * PhysicsWorld2D.BOX_TO_WORLD,
                                 newPosition.y * PhysicsWorld2D.BOX_TO_WORLD);
-        if (!fixedRotation)
-          modelObject.setRotation(body.getAngle());
+        if (!body.isFixedRotation())
+          modelObject.setRotation(body.getAngle() * MathUtils.radDeg);
         return;
       }
       
@@ -98,7 +86,7 @@ public abstract class PhysicObject2D extends Actor
         parent = parent.getParent();
       }
       newPosition.scl(PhysicsWorld2D.WORLD_TO_BOX);
-      body.setTransform(newPosition, fixedRotation ? body.getAngle() : newAngle);
+      body.setTransform(newPosition, body.isFixedRotation() ? body.getAngle() : newAngle * MathUtils.degRad);
     }
   }
   
