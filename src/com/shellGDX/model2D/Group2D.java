@@ -9,11 +9,11 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.SnapshotArray;
-import com.shellGDX.utils.Shader;
+import com.shellGDX.shader.ShaderInstance;
 
 public class Group2D extends Group
 {
-  public Shader shader = null;
+  public ShaderInstance shader = null;
   protected int zIndex = 0;
 
   public Group2D()

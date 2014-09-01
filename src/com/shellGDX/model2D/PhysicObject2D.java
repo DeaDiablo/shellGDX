@@ -6,7 +6,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.shellGDX.GameLog;
-import com.shellGDX.controller.PhysicsWorld;
+import com.shellGDX.controller.PhysicsWorld2D;
 
 public abstract class PhysicObject2D extends Actor
 {
@@ -78,9 +78,10 @@ public abstract class PhysicObject2D extends Actor
       {
         body.setActive(modelObject.isVisible());
         newPosition = body.getPosition();
-        modelObject.setPosition(newPosition.x * PhysicsWorld.BOX_TO_WORLD,
-                                newPosition.y * PhysicsWorld.BOX_TO_WORLD);
-        modelObject.setRotation(body.getAngle());
+        modelObject.setPosition(newPosition.x * PhysicsWorld2D.BOX_TO_WORLD,
+                                newPosition.y * PhysicsWorld2D.BOX_TO_WORLD);
+        if (!fixedRotation)
+          modelObject.setRotation(body.getAngle());
         return;
       }
       
@@ -96,7 +97,7 @@ public abstract class PhysicObject2D extends Actor
         newAngle += parent.getRotation();
         parent = parent.getParent();
       }
-      newPosition.scl(PhysicsWorld.WORLD_TO_BOX);
+      newPosition.scl(PhysicsWorld2D.WORLD_TO_BOX);
       body.setTransform(newPosition, fixedRotation ? body.getAngle() : newAngle);
     }
   }
@@ -106,15 +107,15 @@ public abstract class PhysicObject2D extends Actor
   @Override
   protected void setStage(Stage stage)
   {
-    if (PhysicsWorld.instance != null)
+    if (PhysicsWorld2D.instance != null)
     {
       if (body != null)
       {
-        PhysicsWorld.instance.destroyBody(body);
+        PhysicsWorld2D.instance.destroyBody(body);
         body = null;
       }
 
-      body = initPhysicObject(PhysicsWorld.instance);
+      body = initPhysicObject(PhysicsWorld2D.instance);
       if (body != null)
       {
         super.setStage(stage);
@@ -128,9 +129,9 @@ public abstract class PhysicObject2D extends Actor
   @Override
   public boolean remove()
   {
-    if (PhysicsWorld.instance != null && body != null)
+    if (PhysicsWorld2D.instance != null && body != null)
     {
-      PhysicsWorld.instance.destroyBody(body);
+      PhysicsWorld2D.instance.destroyBody(body);
       body = null;
     }
     return super.remove();

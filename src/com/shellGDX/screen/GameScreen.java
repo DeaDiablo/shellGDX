@@ -49,7 +49,11 @@ public class GameScreen implements Screen
     Gdx.gl.glClearColor(clearColor.r, clearColor.g, clearColor.b, clearColor.a);
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
     update(deltaTime);
-    view.draw(contoller.getScenes2D(), contoller.getScenes3D());
+    draw(deltaTime);
+  }
+  
+  public void draw(float deltaTime)
+  {
   }
 
   @Override

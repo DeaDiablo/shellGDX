@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
+import com.badlogic.gdx.graphics.g3d.Shader;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.SnapshotArray;
@@ -42,15 +43,21 @@ public class Group3D extends Model3D
    * {@link #drawChildren(Batch, float)}, then {@link #resetTransform(Batch)} if
    * needed.
    */
+  
   @Override
-  public void draw(ModelBatch modelBatch, Environment environment)
+  public void draw(ModelBatch modelBatch, Environment environment, Shader shader)
   {
-    super.draw(modelBatch, environment);
-    drawChildren(modelBatch, environment);
+    if (model != null)
+      super.draw(modelBatch, environment, shader);
+    drawChildren(modelBatch, environment, shader);
   }
 
-  public void drawChildren(ModelBatch modelBatch, Environment environment)
+  public void drawChildren(ModelBatch modelBatch, Environment environment, Shader shader)
   {
+    Shader renderShader = shader;
+    if (this.shader != null)
+      renderShader = this.shader;
+    
     // modelBatch.render(children, environment); maybe faster
     SnapshotArray<Model3D> children = this.children;
     Model3D[] models = children.begin();
@@ -63,7 +70,7 @@ public class Group3D extends Model3D
       
       if (models[i] instanceof Group3D)
       {
-        ((Group3D) models[i]).drawChildren(modelBatch, environment);
+        ((Group3D) models[i]).drawChildren(modelBatch, environment, renderShader);
       }
       else
       {
@@ -73,7 +80,7 @@ public class Group3D extends Model3D
 
         if (child.isCullable(getScene3D().getCamera()))
         {
-          child.draw(modelBatch, environment);
+          child.draw(modelBatch, environment, shader);
           visibleCount++;
         }
         

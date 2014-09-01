@@ -21,12 +21,22 @@ public abstract class CompositeObject2D extends Group2D
   
   public CompositeObject2D(TextureRegion region, boolean physic, boolean light)
   {
+    this(new ModelObject2D(region), physic, light);
+  }
+  
+  public CompositeObject2D(ModelObject2D model, boolean physic)
+  {
+    this(model, physic, false);
+  }
+  
+  public CompositeObject2D(ModelObject2D model, boolean physic, boolean light)
+  {
     super();
     
     //model
-    if (region != null)
+    if (model != null)
     {
-      modelObject = new ModelObject2D(region);
+      modelObject = model;
       addActor(modelObject);
     }
 

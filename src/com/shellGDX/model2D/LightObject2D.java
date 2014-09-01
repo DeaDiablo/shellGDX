@@ -7,8 +7,8 @@ import com.badlogic.gdx.utils.SnapshotArray;
 import com.shellGDX.GameLog;
 import com.shellGDX.box2dLight.ConeLight;
 import com.shellGDX.box2dLight.Light2D;
+import com.shellGDX.box2dLight.LightWorld2D;
 import com.shellGDX.box2dLight.RayHandler;
-import com.shellGDX.controller.LightWorld;
 
 public abstract class LightObject2D extends Actor
 {
@@ -82,17 +82,17 @@ public abstract class LightObject2D extends Actor
   @Override
   protected void setStage(Stage stage)
   {
-    if (LightWorld.instance != null)
+    if (LightWorld2D.instance != null)
     {
       if (lights.size > 0)
       {
-        LightWorld.instance.removeLights(lights);
+        LightWorld2D.instance.removeLights(lights);
         lights.clear();
       }
 
-      if (initLightsObject(LightWorld.instance, lights))
+      if (initLightsObject(LightWorld2D.instance, lights))
       {
-        LightWorld.instance.addLights(lights);
+        LightWorld2D.instance.addLights(lights);
         super.setStage(stage);
         return;
       }
@@ -104,9 +104,9 @@ public abstract class LightObject2D extends Actor
   @Override
   public boolean remove()
   {
-    if (LightWorld.instance != null && lights != null)
+    if (LightWorld2D.instance != null && lights != null)
     {
-      LightWorld.instance.removeLights(lights);
+      LightWorld2D.instance.removeLights(lights);
       lights.clear();
     }
     return super.remove();

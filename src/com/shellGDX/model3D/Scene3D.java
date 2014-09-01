@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
+import com.badlogic.gdx.graphics.g3d.Shader;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.math.Vector3;
@@ -174,6 +175,16 @@ public class Scene3D extends InputAdapter implements Disposable
     camera.viewportWidth = this.width;
     camera.viewportHeight = this.height;
   }
+  
+  public void setShader(Shader shader)
+  {
+    root.shader = shader;
+  }
+  
+  public Shader getShader()
+  {
+    return root.shader;
+  }
 
   public void draw()
   {
@@ -181,7 +192,7 @@ public class Scene3D extends InputAdapter implements Disposable
     if (!root.isVisible())
       return;
     modelBatch.begin(camera);
-    root.draw(modelBatch, environment);
+    root.draw(modelBatch, environment, root.shader);
     modelBatch.end();
   }
 
