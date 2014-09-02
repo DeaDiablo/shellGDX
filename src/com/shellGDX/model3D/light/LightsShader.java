@@ -95,7 +95,8 @@ public class LightsShader extends ShaderInstance
                          "  distance = max(0.0, (u_locations[" + i + "].w - length(direction))) / u_locations[" + i + "].w;\n" +
                          "  direction = normalize(direction);\n" +
                          "  angle = max(0.0, dot(v_normal, direction));\n" +
-                         "  conusAngle = (max(0.0, dot(-direction, u_direction[" + i + "])) - u_angles[" + i + "].x) / (1.0 - u_angles[" + i + "].y);\n" +
+                         "  conusAngle = (dot(-direction, u_direction[" + i + "]) - u_angles[" + i + "].x) / (1.0 - u_angles[" + i + "].y);\n" +
+                         "  conusAngle = max(0.0, conusAngle);\n" +
                          "  diffuse += u_colors[" + i + "] * angle * conusAngle * distance;\n\n";
      }
 

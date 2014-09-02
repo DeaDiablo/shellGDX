@@ -102,6 +102,9 @@ public abstract class PhysicObject2D extends Actor
         PhysicsWorld2D.instance.destroyBody(body);
         body = null;
       }
+      
+      if (stage == null)
+        return;
 
       body = initPhysicObject(PhysicsWorld2D.instance);
       if (body != null)

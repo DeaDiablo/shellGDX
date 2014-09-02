@@ -89,6 +89,9 @@ public abstract class LightObject2D extends Actor
         LightWorld2D.instance.removeLights(lights);
         lights.clear();
       }
+      
+      if (stage == null)
+        return;
 
       if (initLightsObject(LightWorld2D.instance, lights))
       {

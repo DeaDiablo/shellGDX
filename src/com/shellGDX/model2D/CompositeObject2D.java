@@ -38,20 +38,6 @@ public abstract class CompositeObject2D extends Group2D
       modelObject = model;
       addActor(modelObject);
     }
-
-    //physic
-    if (physic)
-    {
-      physicObject = new PhysicObject2D()
-      {
-        @Override
-        public Body initPhysicObject(World physicsWorls)
-        {
-          return initPhysic(physicsWorls);
-        }
-      };
-      addActor(physicObject);
-    }
     
     //light
     if (light)
@@ -65,6 +51,20 @@ public abstract class CompositeObject2D extends Group2D
         }
       };
       addActor(lightObject);
+    }
+
+    //physic
+    if (physic)
+    {
+      physicObject = new PhysicObject2D()
+      {
+        @Override
+        public Body initPhysicObject(World physicsWorls)
+        {
+          return initPhysic(physicsWorls);
+        }
+      };
+      addActor(physicObject);
     }
   }
   
