@@ -9,7 +9,6 @@ public class PhysicsWorld2D
   public static float   WORLD_TO_BOX = 0.01f;
   public static float   BOX_TO_WORLD = 100f;
 
-  public static boolean debug        = true;
   public static boolean fixedTime    = false;
   public static World   instance     = null;
 

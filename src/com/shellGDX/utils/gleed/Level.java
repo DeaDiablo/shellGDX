@@ -3,13 +3,14 @@ package com.shellGDX.utils.gleed;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.SnapshotArray;
 import com.shellGDX.model2D.Group2D;
 import com.shellGDX.model2D.Scene2D;
 
 public class Level extends Group2D
 {
   private Properties properties = new Properties();
-  private Array<Layer> layers = new Array<Layer>();
+  private SnapshotArray<Layer> layers = new SnapshotArray<Layer>(false, 16, Layer.class);
   private String levelName = "";
   
   public Properties getProperties()
@@ -22,7 +23,7 @@ public class Level extends Group2D
     return layers.size;
   }
 
-  public Array<Layer> getLayers()
+  public SnapshotArray<Layer> getLayers()
   {
     return layers;
   }
@@ -77,25 +78,28 @@ public class Level extends Group2D
     
     clearChildren();
     
-    for(Layer layer : layers)
+    Layer[] layersDraw = layers.begin();
+    for(int i = 0, n = layers.size; i < n; i++)
     {
+      Layer layer = layersDraw[i];
       if (!layer.isVisible())
         continue;
       
       int blockX = (int)scene.getCamera().position.x / Settings.xGridSize;
       int blockY = (int)scene.getCamera().position.y / Settings.yGridSize;
       
-      for (int i = -1; i <= 1; i ++)
+      for (int x = -1; x <= 1; x ++)
       {
-        for (int j = -1; j <= 1; j ++)
+        for (int y = -1; y <= 1; y ++)
         {
-          Array<TextureElement> textures = layer.getTextures(blockX + i, blockY + j);
+          Array<TextureElement> textures = layer.getTextures(blockX + x, blockY + y);
           if (textures != null && textures.size > 0)
             for(TextureElement texture : textures)
               addActor(texture);
         }
       }
     }
+    layers.end();
     return true;
   }
 }

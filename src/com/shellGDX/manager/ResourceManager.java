@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.ParticleEffectPool;
+import com.badlogic.gdx.graphics.g2d.ParticleEffectPool.PooledEffect;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -186,9 +187,12 @@ public class ResourceManager extends AssetManager
     particleFiles.add(convertFilename(fileName));
   }
   
-  public ParticleEffectPool getEffect(String fileName)
+  public PooledEffect getEffect(String fileName)
   {
-    return particlePools.get(convertFilename(fileName));
+    ParticleEffectPool pool = particlePools.get(convertFilename(fileName));
+    if (pool != null)
+      return pool.obtain();
+    return null;
   }
 
   @Override

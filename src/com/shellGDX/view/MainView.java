@@ -59,20 +59,17 @@ public class MainView
       scene.draw();
   }
   
+  protected Matrix4 worldMatrix = new Matrix4();
+  
   public void drawPhysicsDebug(Camera camera)
   {
-    if (PhysicsWorld2D.debug && PhysicsWorld2D.instance != null)
-    {
-      Matrix4 worldMatrix = new Matrix4();
-      worldMatrix.set(camera.combined);
-      worldMatrix.scale(PhysicsWorld2D.BOX_TO_WORLD, PhysicsWorld2D.BOX_TO_WORLD, PhysicsWorld2D.BOX_TO_WORLD);
-      getDebugRenderer().render(PhysicsWorld2D.instance, worldMatrix);
-    }
+    worldMatrix.set(camera.combined);
+    worldMatrix.scale(PhysicsWorld2D.BOX_TO_WORLD, PhysicsWorld2D.BOX_TO_WORLD, PhysicsWorld2D.BOX_TO_WORLD);
+    getDebugRenderer().render(PhysicsWorld2D.instance, worldMatrix);
   }
   
   public void drawLightWorld()
   {
-    if (LightWorld2D.instance != null)
-      LightWorld2D.instance.render();
+    LightWorld2D.instance.render();
   }
 }

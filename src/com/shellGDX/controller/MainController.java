@@ -2,7 +2,7 @@ package com.shellGDX.controller;
 
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.SnapshotArray;
 import com.shellGDX.box2dLight.LightWorld2D;
 import com.shellGDX.manager.SoundManager;
 import com.shellGDX.model2D.Scene2D;
@@ -11,8 +11,8 @@ import com.shellGDX.model3D.Scene3D;
 public class MainController extends InputMultiplexer
 {
   // Scenes
-  private Array<Scene2D> scenes2D = new Array<Scene2D>();
-  private Array<Scene3D> scenes3D = new Array<Scene3D>();
+  private SnapshotArray<Scene2D> scenes2D = new SnapshotArray<Scene2D>(false, 1, Scene2D.class);
+  private SnapshotArray<Scene3D> scenes3D = new SnapshotArray<Scene3D>(false, 1, Scene3D.class);
 
   public MainController()
   {
@@ -20,7 +20,7 @@ public class MainController extends InputMultiplexer
   }
 
   // Scenes2D
-  public Array<Scene2D> getScenes2D()
+  public SnapshotArray<Scene2D> getScenes2D()
   {
     return scenes2D;
   }
@@ -51,7 +51,7 @@ public class MainController extends InputMultiplexer
   
   //Scenes3D
 
-  public Array<Scene3D> getScenes3D()
+  public SnapshotArray<Scene3D> getScenes3D()
   {
     return scenes3D;
   }
@@ -82,17 +82,26 @@ public class MainController extends InputMultiplexer
     PhysicsWorld2D.update(deltaTime);
 
     // update elements
-    for (Scene2D scene : scenes2D)
+    if (scenes2D.size > 0)
     {
-      scene.act(deltaTime);
+      Scene2D[] scenesUpdate = scenes2D.begin();
+      for (int i = 0, n = scenes2D.size; i < n; i++)
+      {
+        scenesUpdate[i].act(deltaTime);
+      }
+      scenes2D.end();
+      LightWorld2D.update();
     }
     
-    for (Scene3D scene : scenes3D)
+    if (scenes3D.size > 0)
     {
-      scene.act(deltaTime);
+      Scene3D[] scenesUpdate = scenes3D.begin();
+      for (int i = 0, n = scenes3D.size; i < n; i++)
+      {
+        scenesUpdate[i].act(deltaTime);
+      }
+      scenes3D.end();
     }
-    
-    LightWorld2D.update();
   }
 
   public void clear()

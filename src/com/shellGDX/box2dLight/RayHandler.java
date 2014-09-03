@@ -51,7 +51,7 @@ public class RayHandler implements Disposable
    * <p>
    * NOTE: DO NOT MODIFY THIS LIST
    */
-  final Array<Light2D>    lightList                = new Array<Light2D>(false, 16);
+  final SnapshotArray<Light2D>    lightList        = new SnapshotArray<Light2D>(false, 16, Light2D.class);
   
   final HashMap<Integer, Light2D> lightHashMap     = new HashMap<Integer, Light2D>();
 
@@ -254,10 +254,12 @@ public class RayHandler implements Disposable
    */
   public void update()
   {
-    for (Light2D light : lightList)
+    Light2D[] lights = lightList.begin();
+    for (int i = 0, n = lightList.size; i < n; i++)
     {
-      light.update();
+      lights[i].update();
     }
+    lightList.end();
   }
 
   /**
