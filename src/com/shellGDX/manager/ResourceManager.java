@@ -1,6 +1,7 @@
 package com.shellGDX.manager;
 
 import java.io.File;
+import java.util.HashMap;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
@@ -12,10 +13,12 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import com.badlogic.gdx.graphics.g2d.ParticleEffectPool;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.utils.Array;
 import com.shellGDX.GameLog;
 import com.shellGDX.utils.gleed.Level;
 import com.shellGDX.utils.gleed.LevelLoader;
@@ -174,14 +177,18 @@ public class ResourceManager extends AssetManager
     return get(fileName, Model.class);
   }
   
+  final Array<String> particleFiles = new Array<String>();
+  final HashMap<String, ParticleEffectPool> particlePools = new HashMap<String, ParticleEffectPool>();
+  
   public void loadParticleEffect(String fileName)
   {
     load(fileName, ParticleEffect.class);
+    particleFiles.add(convertFilename(fileName));
   }
   
-  public ParticleEffect getEffect(String fileName)
+  public ParticleEffectPool getEffect(String fileName)
   {
-    return get(fileName, ParticleEffect.class);
+    return particlePools.get(convertFilename(fileName));
   }
 
   @Override
@@ -205,7 +212,7 @@ public class ResourceManager extends AssetManager
   {
     if (super.update())
     {
-      SoundManager.instance.finishLoading();
+      endLoading();
       return true;
     }
     return false;
@@ -216,7 +223,7 @@ public class ResourceManager extends AssetManager
   {
     if (super.update(millis))
     {
-      SoundManager.instance.finishLoading();
+      endLoading();
       return true;
     }
     return false;
@@ -226,38 +233,45 @@ public class ResourceManager extends AssetManager
   public void finishLoading()
   {
     super.finishLoading();
+    endLoading();
+  }
+  
+  protected void endLoading()
+  {
+    for(int i = 0; i < particleFiles.size; i++)
+    {
+      String fileName = particleFiles.get(i);
+      ParticleEffect effect = get(fileName, ParticleEffect.class);
+      if (effect != null)
+        particlePools.put(fileName,  new ParticleEffectPool(effect, 4, 16));
+    }
+    particleFiles.clear();
     SoundManager.instance.finishLoading();
   }
   
   @Override
   public synchronized <T> T get(String fileName, Class<T> type)
   {
-    int index = fileName.lastIndexOf("/");    
-    if (index != -1)
-      fileName = fileName.substring(index + 1);
-
-    return super.get(fileName, type);
+    return super.get(convertFilename(fileName), type);
   }
   
   @Override
   public synchronized <T> T get(String fileName)
   {
-    int index = fileName.lastIndexOf("/");
-    if (index != -1)
-      fileName = fileName.substring(index + 1);
-
-    return super.get(fileName);
+    return super.get(convertFilename(fileName));
   }
 
   @Override
   protected <T> void addAsset(final String fileName, Class<T> type, T asset)
+  { 
+    super.addAsset(convertFilename(fileName), type, asset);
+  }
+  
+  protected String convertFilename(String fileName)
   {
-    String newFileName = fileName;
-
-    int index = newFileName.lastIndexOf("/");    
+    int index = fileName.lastIndexOf("/");    
     if (index != -1)
-      newFileName = newFileName.substring(index + 1);
-    
-    super.addAsset(newFileName, type, asset);
+      fileName = fileName.substring(index + 1);
+    return fileName;
   }
 }

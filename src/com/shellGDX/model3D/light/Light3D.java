@@ -2,6 +2,7 @@ package com.shellGDX.model3D.light;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
+import com.shellGDX.model3D.ModelObject3D;
 
 public class Light3D
 {
@@ -27,4 +28,11 @@ public class Light3D
   public Vector3 position;
   public float radius;
   public Color color;
+  
+
+  
+  public void attachModel(ModelObject3D model, float offsetX, float offsetY)
+  {
+    
+  }
 }

@@ -51,6 +51,14 @@ public enum LightWorld3D
     return lights.get(numLight);
   }
   
+  public Array<Integer> addLights(Array<Light3D> lights)
+  {
+    Array<Integer> numLights = new Array<Integer>(false, lights.size);
+    for(int i = 0; i < lights.size; i++)
+      numLights.add(addLight(lights.get(i)));
+    return numLights;
+  }
+  
   public int addLight(Light3D light)
   {
     for(int i = 0; i < lights.size; i++)
@@ -64,6 +72,12 @@ public enum LightWorld3D
     lights.add(light);
     return lights.indexOf(light, true);
   }
+  
+  public void removeLights(Array<Light3D> lights)
+  {
+    lights.removeAll(lights, true);
+  }
+  
   
   public void removeLight(int numLight)
   {

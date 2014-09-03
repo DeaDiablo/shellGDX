@@ -5,8 +5,8 @@ import com.badlogic.gdx.utils.Pool.Poolable;
 public class Event3D implements Poolable
 {
   private Scene3D scene;
-  private Model3D targetModel;
-  private Model3D listenerModel;
+  private ModelObject3D targetModel;
+  private ModelObject3D listenerModel;
   private boolean capture;       // true means event occurred during the
                                   // capture phase
   private boolean bubbles = true; // true means propagate to target's parents
@@ -65,23 +65,23 @@ public class Event3D implements Poolable
   }
 
   /** Returns the model that the event originated from. */
-  public Model3D getTarget()
+  public ModelObject3D getTarget()
   {
     return targetModel;
   }
 
-  public void setTarget(Model3D targetModel)
+  public void setTarget(ModelObject3D targetModel)
   {
     this.targetModel = targetModel;
   }
 
   /** Returns the model that this listener is attached to. */
-  public Model3D getListenerModel()
+  public ModelObject3D getListenerModel()
   {
     return listenerModel;
   }
 
-  public void setListenerModel(Model3D listenerModel)
+  public void setListenerModel(ModelObject3D listenerModel)
   {
     this.listenerModel = listenerModel;
   }

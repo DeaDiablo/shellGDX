@@ -9,9 +9,9 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.SnapshotArray;
 
-public class Group3D extends Model3D
+public class Group3D extends ModelObject3D
 {
-  private final SnapshotArray<Model3D> children = new SnapshotArray<Model3D>(true, 4, Model3D.class);
+  private final SnapshotArray<ModelObject3D> children = new SnapshotArray<ModelObject3D>(true, 4, ModelObject3D.class);
   public int                           visibleCount;
 
   public Group3D()
@@ -28,7 +28,7 @@ public class Group3D extends Model3D
   public boolean update(float delta)
   {
     super.update(delta);
-    Model3D[] models = children.begin();
+    ModelObject3D[] models = children.begin();
     for (int i = 0, n = children.size; i < n; i++)
     {
       models[i].update(delta);
@@ -59,12 +59,12 @@ public class Group3D extends Model3D
       renderShader = this.shader;
     
     // modelBatch.render(children, environment); maybe faster
-    SnapshotArray<Model3D> children = this.children;
-    Model3D[] models = children.begin();
+    SnapshotArray<ModelObject3D> children = this.children;
+    ModelObject3D[] models = children.begin();
     visibleCount = 0;
     for (int i = 0, n = children.size; i < n; i++)
     {
-      Model3D child = models[i];
+      ModelObject3D child = models[i];
       if (!child.isVisible())
         continue;
       
@@ -98,7 +98,7 @@ public class Group3D extends Model3D
    * 
    * @see #remove()
    */
-  public void addModel3D(Model3D model3D)
+  public void addModel3D(ModelObject3D model3D)
   {
     model3D.remove();
     children.add(model3D);
@@ -114,7 +114,7 @@ public class Group3D extends Model3D
    * {@link Action#setPool(com.badlogic.gdx.utils.Pool) pool}, if any. This is
    * not done automatically.
    */
-  public boolean removeModel3D(Model3D model3D)
+  public boolean removeModel3D(ModelObject3D model3D)
   {
     if (!children.removeValue(model3D, true))
       return false;
@@ -135,10 +135,10 @@ public class Group3D extends Model3D
   /** Removes all models from this group. */
   public void clearChildren()
   {
-    Model3D[] models = children.begin();
+    ModelObject3D[] models = children.begin();
     for (int i = 0, n = children.size; i < n; i++)
     {
-      Model3D child = models[i];
+      ModelObject3D child = models[i];
       child.setScene(null);
       child.setParent(null);
     }
@@ -158,18 +158,18 @@ public class Group3D extends Model3D
    * Returns the first model found with the specified name. Note this
    * recursively compares the name of every model in the group.
    */
-  public Model3D findModel(String name)
+  public ModelObject3D findModel(String name)
   {
-    Array<Model3D> children = this.children;
+    Array<ModelObject3D> children = this.children;
     for (int i = 0, n = children.size; i < n; i++)
       if (name.equals(children.get(i).getName()))
         return children.get(i);
     for (int i = 0, n = children.size; i < n; i++)
     {
-      Model3D child = children.get(i);
+      ModelObject3D child = children.get(i);
       if (child instanceof Group3D)
       {
-        Model3D model = ((Group3D) child).findModel(name);
+        ModelObject3D model = ((Group3D) child).findModel(name);
         if (model != null)
           return model;
       }
@@ -181,13 +181,13 @@ public class Group3D extends Model3D
   protected void setScene(Scene3D scene3d)
   {
     super.setScene(scene3d);
-    Array<Model3D> children = this.children;
+    Array<ModelObject3D> children = this.children;
     for (int i = 0, n = children.size; i < n; i++)
       children.get(i).setScene(scene3d);
   }
 
   /** Returns an ordered list of child models in this group. */
-  public SnapshotArray<Model3D> getChildren()
+  public SnapshotArray<ModelObject3D> getChildren()
   {
     return children;
   }
@@ -205,7 +205,7 @@ public class Group3D extends Model3D
 
   private void print(String indent)
   {
-    Model3D[] models = children.begin();
+    ModelObject3D[] models = children.begin();
     for (int i = 0, n = children.size; i < n; i++)
     {
       System.out.println(indent + models[i]);
@@ -219,7 +219,7 @@ public class Group3D extends Model3D
   public void dispose()
   {
     super.dispose();
-    for (Model3D model3D : children)
+    for (ModelObject3D model3D : children)
       model3D.dispose();
   }
 }

@@ -1,7 +1,7 @@
 package com.shellGDX.model3D.actions;
 
 import com.shellGDX.model3D.Action3D;
-import com.shellGDX.model3D.Model3D;
+import com.shellGDX.model3D.ModelObject3D;
 
 import com.badlogic.gdx.utils.Array;
 
@@ -16,7 +16,7 @@ public class AfterAction extends DelegateAction
   private Array<Action3D> waitForActions = new Array<Action3D>(false, 4);
 
   @Override
-  public void setModel3D(Model3D model3D)
+  public void setModel3D(ModelObject3D model3D)
   {
     if (model3D != null)
       waitForActions.addAll(model3D.getActions3d());

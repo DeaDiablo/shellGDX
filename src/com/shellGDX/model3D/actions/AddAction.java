@@ -1,11 +1,11 @@
 package com.shellGDX.model3D.actions;
 
 import com.shellGDX.model3D.Action3D;
-import com.shellGDX.model3D.Model3D;
+import com.shellGDX.model3D.ModelObject3D;
 
 public class AddAction extends Action3D
 {
-  private Model3D  targetModel;
+  private ModelObject3D  targetModel;
   private Action3D action;
 
   @Override
@@ -15,7 +15,7 @@ public class AddAction extends Action3D
     return true;
   }
 
-  public Model3D getTargetModel()
+  public ModelObject3D getTargetModel()
   {
     return targetModel;
   }
@@ -24,7 +24,7 @@ public class AddAction extends Action3D
    * Sets the model to add an action to. If null (the default), the
    * {@link #getModel() model} will be used.
    */
-  public void setTargetModel(Model3D model)
+  public void setTargetModel(ModelObject3D model)
   {
     this.targetModel = model;
   }

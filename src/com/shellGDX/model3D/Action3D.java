@@ -11,13 +11,13 @@ import com.badlogic.gdx.utils.Pool.Poolable;
 abstract public class Action3D implements Poolable
 {
   /** The model this action is attached to, or null if it is not attached. */
-  protected Model3D model3D;
+  protected ModelObject3D model3D;
 
   private Pool<Action3D> pool;
 
   /**
    * Updates the action based on time. Typically this is called each frame by
-   * {@link Model3D#update(float)}.
+   * {@link ModelObject3D#update(float)}.
    * 
    * @param delta
    *          Time in seconds since the last frame.
@@ -32,7 +32,7 @@ abstract public class Action3D implements Poolable
   }
 
   /** @return null if the action is not attached to an model. */
-  public Model3D getModel3D()
+  public ModelObject3D getModel3D()
   {
     return model3D;
   }
@@ -51,7 +51,7 @@ abstract public class Action3D implements Poolable
    * first call to {@link #act(float)}. For a {@link TemporalAction}, use
    * TemporalAction#begin().
    */
-  public void setModel3D(Model3D model3D)
+  public void setModel3D(ModelObject3D model3D)
   {
     this.model3D = model3D;
     if (model3D == null)

@@ -1,7 +1,7 @@
 package com.shellGDX.model3D.actions;
 
 import com.shellGDX.model3D.Action3D;
-import com.shellGDX.model3D.Model3D;
+import com.shellGDX.model3D.ModelObject3D;
 
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
@@ -105,7 +105,7 @@ public class ParallelAction extends Action3D
   }
 
   @Override
-  public void setModel3D(Model3D model)
+  public void setModel3D(ModelObject3D model)
   {
     Array<Action3D> actions = this.actions;
     for (int i = 0, n = actions.size; i < n; i++)

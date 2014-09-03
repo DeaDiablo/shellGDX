@@ -1,7 +1,7 @@
 package com.shellGDX.model3D.actions;
 
 import com.shellGDX.model3D.Action3D;
-import com.shellGDX.model3D.Model3D;
+import com.shellGDX.model3D.ModelObject3D;
 
 import com.badlogic.gdx.utils.Pool;
 
@@ -57,7 +57,7 @@ abstract public class DelegateAction extends Action3D
   }
 
   @Override
-  public void setModel3D(Model3D model3D)
+  public void setModel3D(ModelObject3D model3D)
   {
     if (action != null)
       action.setModel3D(model3D);

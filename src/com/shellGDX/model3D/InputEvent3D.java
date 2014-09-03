@@ -13,7 +13,7 @@ public class InputEvent3D extends Event3D
   private float   sceneX, sceneY, sceneZ;
   private int     pointer, button, keyCode, scrollAmount;
   private char    character;
-  private Model3D relatedModel;
+  private ModelObject3D relatedModel;
 
   public void reset()
   {
@@ -130,7 +130,7 @@ public class InputEvent3D extends Event3D
    * is the model being exited, or null. For exit, this is the model being
    * entered, or null.
    */
-  public Model3D getRelatedModel()
+  public ModelObject3D getRelatedModel()
   {
     return relatedModel;
   }
@@ -139,7 +139,7 @@ public class InputEvent3D extends Event3D
    * @param relatedModel
    *          May be null.
    */
-  public void setRelatedModel(Model3D relatedModel)
+  public void setRelatedModel(ModelObject3D relatedModel)
   {
     this.relatedModel = relatedModel;
   }
@@ -151,7 +151,7 @@ public class InputEvent3D extends Event3D
    * @param modelCoords
    *          Output for resulting coordinates.
    */
-  public Vector3 toCoordinates(Model3D model, Vector3 modelCoords)
+  public Vector3 toCoordinates(ModelObject3D model, Vector3 modelCoords)
   {
     modelCoords.set(sceneX, sceneY, sceneZ);
     // model.sceneToLocalCoordinates(modelCoords);

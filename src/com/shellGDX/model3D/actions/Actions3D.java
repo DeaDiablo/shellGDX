@@ -1,7 +1,7 @@
 package com.shellGDX.model3D.actions;
 
 import com.shellGDX.model3D.Action3D;
-import com.shellGDX.model3D.Model3D;
+import com.shellGDX.model3D.ModelObject3D;
 
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.utils.Pool;
@@ -26,7 +26,7 @@ public class Actions3D
     return addAction;
   }
 
-  static public AddAction addAction(Action3D action, Model3D targetModel)
+  static public AddAction addAction(Action3D action, ModelObject3D targetModel)
   {
     AddAction addAction = action3D(AddAction.class);
     addAction.setTargetModel(targetModel);
@@ -41,7 +41,7 @@ public class Actions3D
     return removeAction;
   }
 
-  static public RemoveAction removeAction(Action3D action, Model3D targetModel)
+  static public RemoveAction removeAction(Action3D action, ModelObject3D targetModel)
   {
     RemoveAction removeAction = action3D(RemoveAction.class);
     removeAction.setTargetModel(targetModel);
@@ -186,7 +186,7 @@ public class Actions3D
     return action;
   }
 
-  static public RemoveModelAction removeModel(Model3D removeModel)
+  static public RemoveModelAction removeModel(ModelObject3D removeModel)
   {
     RemoveModelAction action = action3D(RemoveModelAction.class);
     action.setRemoveModel(removeModel);

@@ -101,7 +101,7 @@ public abstract class LightObject2D extends Actor
       }
     }
 
-    GameLog.instance.writeError("Failed to initialize a light object!");
+    GameLog.instance.writeError("Failed to initialize a light2D object!");
   }
 
   @Override

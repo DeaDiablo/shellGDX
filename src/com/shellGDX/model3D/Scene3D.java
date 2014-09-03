@@ -28,8 +28,8 @@ public class Scene3D extends InputAdapter implements Disposable
   private PerspectiveCamera camera;
 
   private final Group3D     root;
-  private Model3D           scrollFocus;
-  private Model3D           keyboardFocus;
+  private ModelObject3D           scrollFocus;
+  private ModelObject3D           keyboardFocus;
 
   public Touchable          touchable = Touchable.disabled;
   private int               selecting = -1;
@@ -230,7 +230,7 @@ public class Scene3D extends InputAdapter implements Disposable
    * @see Group#addModel(Model)
    * @see Model#remove()
    */
-  public void addModel3D(Model3D model)
+  public void addModel3D(ModelObject3D model)
   {
     root.addModel3D(model);
   }
@@ -250,7 +250,7 @@ public class Scene3D extends InputAdapter implements Disposable
    * 
    * @see Group#getChildren()
    */
-  public Array<Model3D> getModels3d()
+  public Array<ModelObject3D> getModels3d()
   {
     return root.getChildren();
   }
@@ -295,7 +295,7 @@ public class Scene3D extends InputAdapter implements Disposable
    * Removes the touch, keyboard, and scroll focus for the specified model and
    * any descendants.
    */
-  public void unfocus(Model3D model)
+  public void unfocus(ModelObject3D model)
   {
     if (scrollFocus != null && scrollFocus.isDescendantOf(model))
       scrollFocus = null;
@@ -309,7 +309,7 @@ public class Scene3D extends InputAdapter implements Disposable
    * @param model
    *          May be null.
    */
-  public void setKeyboardFocus(Model3D model)
+  public void setKeyboardFocus(ModelObject3D model)
   {
     if (keyboardFocus == model)
       return;
@@ -320,7 +320,7 @@ public class Scene3D extends InputAdapter implements Disposable
    * 
    * @return May be null.
    */
-  public Model3D getKeyboardFocus()
+  public ModelObject3D getKeyboardFocus()
   {
     return keyboardFocus;
   }
@@ -331,7 +331,7 @@ public class Scene3D extends InputAdapter implements Disposable
    * @param model
    *          May be null.
    */
-  public void setScrollFocus(Model3D model)
+  public void setScrollFocus(ModelObject3D model)
   {
     if (scrollFocus == model)
       return;
@@ -342,7 +342,7 @@ public class Scene3D extends InputAdapter implements Disposable
    * 
    * @return May be null.
    */
-  public Model3D getScrollFocus()
+  public ModelObject3D getScrollFocus()
   {
     return scrollFocus;
   }
@@ -401,7 +401,7 @@ public class Scene3D extends InputAdapter implements Disposable
   {
     if (canHit)
     {
-      Model3D model3d = getObject(screenX, screenY);
+      ModelObject3D model3d = getObject(screenX, screenY);
       selecting = model3d != null ? 1 : -1;
       if (model3d != null && model3d.getName() != null)
         Gdx.app.log("", "" + model3d.getName());
@@ -435,11 +435,11 @@ public class Scene3D extends InputAdapter implements Disposable
   int     result   = -1;
   float   distance = -1;
 
-  public Model3D getObject(int screenX, int screenY)
+  public ModelObject3D getObject(int screenX, int screenY)
   {
-    Model3D temp = null;
-    SnapshotArray<Model3D> children = root.getChildren();
-    Model3D[] models = children.begin();
+    ModelObject3D temp = null;
+    SnapshotArray<ModelObject3D> children = root.getChildren();
+    ModelObject3D[] models = children.begin();
     for (int i = 0, n = children.size; i < n; i++)
     {
       temp = hit3d(screenX, screenY, models[i]);
@@ -450,7 +450,7 @@ public class Scene3D extends InputAdapter implements Disposable
     return temp;
   }
 
-  public Model3D hit3d(int screenX, int screenY, Model3D model3d)
+  public ModelObject3D hit3d(int screenX, int screenY, ModelObject3D model3d)
   {
     Ray ray = camera.getPickRay(screenX, screenY);
     float distance = -1;
@@ -463,11 +463,11 @@ public class Scene3D extends InputAdapter implements Disposable
     return null;
   }
 
-  public Model3D hit3d(int screenX, int screenY, Group3D group3d)
+  public ModelObject3D hit3d(int screenX, int screenY, Group3D group3d)
   {
-    Model3D temp = null;
-    SnapshotArray<Model3D> children = group3d.getChildren();
-    Model3D[] models = children.begin();
+    ModelObject3D temp = null;
+    SnapshotArray<ModelObject3D> children = group3d.getChildren();
+    ModelObject3D[] models = children.begin();
     for (int i = 0, n = children.size; i < n; i++)
     {
       temp = hit3d(screenX, screenY, models[i]);

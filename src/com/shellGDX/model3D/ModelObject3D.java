@@ -19,7 +19,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.DelayedRemovalArray;
 import com.badlogic.gdx.utils.Disposable;
 
-public class Model3D extends ModelInstance implements Disposable
+public class ModelObject3D extends ModelInstance implements Disposable
 {
   protected Scene3D                                  scene;
   protected Group3D                                  parent;
@@ -42,18 +42,18 @@ public class Model3D extends ModelInstance implements Disposable
   protected Matrix4                                  rotationMatrix = new Matrix4();
   private AnimationController                        animation;
 
-  public Model3D()
+  public ModelObject3D()
   {
     this(new Model());
     setScale(0, 0, 0);
   }
 
-  public Model3D(Model model)
+  public ModelObject3D(Model model)
   {
     this(model, 0f, 0f, 0f);
   }
 
-  public Model3D(Model model, float x, float y, float z)
+  public ModelObject3D(Model model, float x, float y, float z)
   {
     super(model);
     setPosition(x, y, z);
@@ -120,7 +120,7 @@ public class Model3D extends ModelInstance implements Disposable
     modelBatch.render(this, environment);
   }
 
-  public Model3D hit(float x, float y)
+  public ModelObject3D hit(float x, float y)
   {
     return null;
   }
@@ -128,7 +128,7 @@ public class Model3D extends ModelInstance implements Disposable
   /**
    * Removes this model3d from its parent, if it has a parent.
    * 
-   * @see Group#removeModel3D(Model3D)
+   * @see Group#removeModel3D(ModelObject3D)
    */
   public boolean remove()
   {
@@ -227,11 +227,11 @@ public class Model3D extends ModelInstance implements Disposable
    * Returns true if this model3d is the same as or is the descendant of the
    * specified model3d.
    */
-  public boolean isDescendantOf(Model3D model3d)
+  public boolean isDescendantOf(ModelObject3D model3d)
   {
     if (model3d == null)
       throw new IllegalArgumentException("model3d cannot be null.");
-    Model3D parent = this;
+    ModelObject3D parent = this;
     while (true)
     {
       if (parent == null)
@@ -246,7 +246,7 @@ public class Model3D extends ModelInstance implements Disposable
    * Returns true if this model3d is the same as or is the ascendant of the
    * specified model3d.
    */
-  public boolean isAscendantOf(Model3D model3d)
+  public boolean isAscendantOf(ModelObject3D model3d)
   {
     if (model3d == null)
       throw new IllegalArgumentException("model3d cannot be null.");

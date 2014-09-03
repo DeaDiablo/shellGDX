@@ -1,7 +1,7 @@
 package com.shellGDX.model3D.actions;
 
 import com.shellGDX.model3D.Action3D;
-import com.shellGDX.model3D.Model3D;
+import com.shellGDX.model3D.ModelObject3D;
 
 /**
  * Removes an model from the scene.
@@ -10,7 +10,7 @@ import com.shellGDX.model3D.Model3D;
  */
 public class RemoveModelAction extends Action3D
 {
-  private Model3D removeModel;
+  private ModelObject3D removeModel;
   private boolean removed;
 
   @Override
@@ -37,7 +37,7 @@ public class RemoveModelAction extends Action3D
     removeModel = null;
   }
 
-  public Model3D getRemoveModel()
+  public ModelObject3D getRemoveModel()
   {
     return removeModel;
   }
@@ -46,7 +46,7 @@ public class RemoveModelAction extends Action3D
    * Sets the model to remove. If null (the default), the {@link #getModel()
    * model} will be used.
    */
-  public void setRemoveModel(Model3D removeModel)
+  public void setRemoveModel(ModelObject3D removeModel)
   {
     this.removeModel = removeModel;
   }

@@ -1,7 +1,7 @@
 package com.shellGDX.model3D.actions;
 
 import com.shellGDX.model3D.Action3D;
-import com.shellGDX.model3D.Model3D;
+import com.shellGDX.model3D.ModelObject3D;
 
 /**
  * Removes an action from an model.
@@ -10,7 +10,7 @@ import com.shellGDX.model3D.Model3D;
  */
 public class RemoveAction extends Action3D
 {
-  private Model3D  targetModel;
+  private ModelObject3D  targetModel;
   private Action3D action;
 
   @Override
@@ -20,7 +20,7 @@ public class RemoveAction extends Action3D
     return true;
   }
 
-  public Model3D getTargetModel()
+  public ModelObject3D getTargetModel()
   {
     return targetModel;
   }
@@ -29,7 +29,7 @@ public class RemoveAction extends Action3D
    * Sets the model to remove an action from. If null (the default), the
    * {@link #getModel() model} will be used.
    */
-  public void setTargetModel(Model3D model)
+  public void setTargetModel(ModelObject3D model)
   {
     this.targetModel = model;
   }
