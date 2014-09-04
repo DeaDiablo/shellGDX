@@ -1,11 +1,12 @@
 package com.shellGDX.utils.gleed;
 
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.SnapshotArray;
 import com.shellGDX.model2D.Group2D;
-import com.shellGDX.model2D.Scene2D;
 
 public class Level extends Group2D
 {
@@ -65,6 +66,16 @@ public class Level extends Group2D
   
   protected Vector2   bufferVec = new Vector2();
   protected Rectangle rectBound = new Rectangle();
+  protected int       oldBlockX = -100000, oldBlockY = -100000;
+  protected Camera    camera    = null;
+  
+  @Override
+  protected void setStage(Stage stage)
+  {
+    if (stage != null)
+      camera = stage.getCamera();
+    super.setStage(stage);
+  }
 
   @Override
   public boolean update(float deltaTime)
@@ -72,9 +83,14 @@ public class Level extends Group2D
     if (!super.update(deltaTime))
       return false;
     
-    Scene2D scene = (Scene2D)getStage();
-    if (scene == null)
-      return false;
+    int blockX = (int)camera.position.x / Settings.xGridSize;
+    int blockY = (int)camera.position.y / Settings.yGridSize;
+    
+    if (blockX == oldBlockX && blockY == oldBlockY)
+      return true;
+    
+    oldBlockX = blockX;
+    oldBlockY = blockY;
     
     clearChildren();
     
@@ -84,9 +100,6 @@ public class Level extends Group2D
       Layer layer = layersDraw[i];
       if (!layer.isVisible())
         continue;
-      
-      int blockX = (int)scene.getCamera().position.x / Settings.xGridSize;
-      int blockY = (int)scene.getCamera().position.y / Settings.yGridSize;
       
       for (int x = -1; x <= 1; x ++)
       {
@@ -100,6 +113,7 @@ public class Level extends Group2D
       }
     }
     layers.end();
+    
     return true;
   }
 }
